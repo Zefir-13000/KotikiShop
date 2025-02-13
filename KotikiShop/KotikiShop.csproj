@@ -12,16 +12,26 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="Views\Home\NewFile.txt" />
+    <None Remove="Areas\Admin\Views\Admin\NewFile.txt" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.11" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor" Version="2.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="8.0.13" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.11" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.13" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.13">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.7" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\" />
+    <ProjectReference Include="..\KotikiShop.DataAccess\KotikiShop.DataAccess.csproj" />
+    <ProjectReference Include="..\KotikiShop.Models\KotikiShop.Models.csproj" />
+    <ProjectReference Include="..\KotikiShop.Utility\KotikiShop.Utility.csproj" />
   </ItemGroup>
 
 </Project>

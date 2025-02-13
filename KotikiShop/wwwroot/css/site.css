@@ -8,17 +8,14 @@ html {
   }
 }
 
+.navbar {
+    padding: 0 3rem;
+    background-color: #3b444b;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
   box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
-}
-
-body {
-  margin-bottom: 60px;
 }
 
 .container {
@@ -41,13 +38,49 @@ body {
     border-radius: 8px;
 }
 
-@media (max-width: 768px) {
-    .products {
-        justify-content: center;
+.secret-mita {
+    position: fixed;
+    bottom: 0; /* Align to the bottom of the viewport */
+    right: 0; /* Align to the right corner */
+    width: 20vw; /* Scaled container width */
+    height: 20%; /* Show only the top 20% of the image */
+    overflow: hidden; /* Hide the rest of the image */
+    z-index: 100; /* Ensure it's above other elements */
+    transition: height 0.8s ease-out, transform 0.8s ease-out; /* Smooth transition */
+    cursor: pointer;
+}
+
+.secret-mita {
+    position: fixed;
+    bottom: 0; /* Place at the bottom of the viewport */
+    right: 0; /* Align to the right corner */
+    width: 20vw; /* Scale the container width */
+    height: 20vh; /* Show only the top 20% of the image */
+    overflow: hidden; /* Hide the part of the image outside the container */
+    z-index: 100; /* Ensure visibility */
+    cursor: pointer;
+    transition: height 0.5s ease-out; /* Smooth height transition */
+}
+
+.image-mita {
+    position: absolute;
+    bottom: 0; /* Align the image so the bottom is ready to be revealed */
+    width: 100%; /* Fit the container width */
+    height: auto; /* Maintain aspect ratio */
+    transform: translateY(80%); /* Start by showing the top 20% */
+    transition: transform 0.5s ease-out; /* Smooth image reveal */
+}
+
+.secret-mita:hover {
+    height: 80vh; /* Expand the container to reveal 80% */
+}
+    .secret-mita:hover .image-mita {
+        transform: translateY(0); /* Reveal the bottom 80% of the image */
     }
 
-        .products img {
-            width: 250px;
-            height: 250px;
-        }
+/* Responsive Design - Hide on smaller screens */
+@media (max-width: 768px) {
+    .secret-mita {
+        display: none;  /*Hide the image on mobile devices*/ 
+    }
 }
