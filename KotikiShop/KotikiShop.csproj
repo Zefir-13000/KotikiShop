@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\audio\nyaa-3_rhsqpi3v2.mp3" />
     <Content Remove="wwwroot\css\NewFile.txt" />
     <Content Remove="wwwroot\css\siteaaa.css" />
   </ItemGroup>

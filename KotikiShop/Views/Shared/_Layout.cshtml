@@ -1,12 +1,14 @@
 ﻿<!DOCTYPE html>
 <html lang="en" data-bs-theme="dark">
 <head>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - KotikiShop</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/KotikiShop.styles.css" asp-append-version="true" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 </head>
 <body>
     <header>
@@ -19,12 +21,7 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-end">
                     <ul class="navbar-nav">
-                        <li class="navbar-user-context">
-                            <a class="nav-link" asp-area="Customer" asp-controller="Customer" asp-action="Register">Sign up</a>
-                        </li>
-                        <li class="navbar-user-context">
-                            <a class="nav-link" asp-area="Customer" asp-controller="Customer" asp-action="Login">Login</a>
-                        </li>
+                        <partial name="_LoginPartial" />
                     </ul>
                 </div>
             </div>
@@ -38,13 +35,25 @@
 
     <footer class="border-top footer text-muted">
         <div class="secret-mita">
-            <img class="image-mita" id="secretMita" src="/images/mita.png">
+            <img class="image-mita" src="/images/mita.png">
         </div>
     </footer>
     <script>
-        var audio = new Audio('/audio/nyaa-3_rhsqpi3v2.mp3');
-        document.getElementById('secretMita').addEventListener('mouseenter', function () {
-            audio.play();
+        var audio = new Audio('/audio/mita-sound.mp3');
+
+        document.getElementsByClassName('image-mita')[0].addEventListener('click', function () {
+            if (!this.classList.contains('clicked')) {
+                this.classList.add('clicked');
+                audio.play();
+            };
+        });
+
+        document.getElementsByClassName('image-mita')[0].addEventListener('mouseout', function () {
+            if (this.classList.contains('clicked')) {
+                setTimeout(() => {
+                    this.classList.remove('clicked');
+                }, 100);
+            }
         });
     </script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

@@ -8,10 +8,37 @@ html {
   }
 }
 
+.navbar-brand {
+    font-size: 30px;
+    font-family: Roboto;
+    font-weight: bold;
+    text-shadow: 0 0 10px #fff, 0 0 20px #e60073, 0 0 30px #e60073, 0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px;
+}
+
 .navbar {
     padding: 0 3rem;
     background-color: #3b444b;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.authorization {
+    color: white;
+}
+
+.authorization:hover {
+    color: darkgray;
+}
+
+.btn {
+    --bs-btn-padding-x: 0.5rem;
+    --bs-btn-padding-y: 0.25rem;
+    --bs-btn-font-size: 0.95rem;
+    --bs-btn-bg: none;
+    margin: 5px;
+}
+
+.btn:hover {
+   --bs-btn-hover-bg: #212529;
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
@@ -40,47 +67,26 @@ html {
 
 .secret-mita {
     position: fixed;
-    bottom: 0; /* Align to the bottom of the viewport */
-    right: 0; /* Align to the right corner */
-    width: 20vw; /* Scaled container width */
-    height: 20%; /* Show only the top 20% of the image */
-    overflow: hidden; /* Hide the rest of the image */
-    z-index: 100; /* Ensure it's above other elements */
-    transition: height 0.8s ease-out, transform 0.8s ease-out; /* Smooth transition */
-    cursor: pointer;
-}
-
-.secret-mita {
-    position: fixed;
-    bottom: 0; /* Place at the bottom of the viewport */
-    right: 0; /* Align to the right corner */
-    width: 20vw; /* Scale the container width */
-    height: 20vh; /* Show only the top 20% of the image */
-    overflow: hidden; /* Hide the part of the image outside the container */
-    z-index: 100; /* Ensure visibility */
-    cursor: pointer;
-    transition: height 0.5s ease-out; /* Smooth height transition */
+    bottom: 0;
+    right: 0;
+    width: 300px;
+    height: 300px;
+    overflow: hidden;
+    z-index: 100;
+    transition: height 0.8s ease-out, transform 0.8s ease-out;
+    
 }
 
 .image-mita {
     position: absolute;
-    bottom: 0; /* Align the image so the bottom is ready to be revealed */
-    width: 100%; /* Fit the container width */
-    height: auto; /* Maintain aspect ratio */
-    transform: translateY(80%); /* Start by showing the top 20% */
-    transition: transform 0.5s ease-out; /* Smooth image reveal */
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    transform: translateY(80%);
+    transition: transform 0.35s ease-out;
+    cursor: pointer;
 }
 
-.secret-mita:hover {
-    height: 80vh; /* Expand the container to reveal 80% */
-}
-    .secret-mita:hover .image-mita {
-        transform: translateY(0); /* Reveal the bottom 80% of the image */
-    }
-
-/* Responsive Design - Hide on smaller screens */
-@media (max-width: 768px) {
-    .secret-mita {
-        display: none;  /*Hide the image on mobile devices*/ 
-    }
+.image-mita.clicked {
+    transform: translateY(0);
 }

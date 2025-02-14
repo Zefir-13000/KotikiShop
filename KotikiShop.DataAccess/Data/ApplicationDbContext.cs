@@ -17,6 +17,7 @@ namespace KotikiShop.DataAccess.Data
         }
 
         public DbSet<Cat> Cats { get; set; }
+        public DbSet<CatFamily> CatFamilies { get; set; }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
     }
 }
