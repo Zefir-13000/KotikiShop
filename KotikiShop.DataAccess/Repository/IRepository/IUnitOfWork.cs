@@ -8,6 +8,10 @@ namespace KotikiShop.DataAccess.Repository.IRepository
 {
     public interface IUnitOfWork
     {
+        ICatRepository Cat { get; }
+        ICatFamilyRepository CatFamily { get; }
+        IApplicationUserRepository ApplicationUser { get; }
+
         void Save();
     }
 }

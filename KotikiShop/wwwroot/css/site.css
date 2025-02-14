@@ -29,12 +29,17 @@ html {
     color: darkgray;
 }
 
+.button {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
 .btn {
     --bs-btn-padding-x: 0.5rem;
     --bs-btn-padding-y: 0.25rem;
     --bs-btn-font-size: 0.95rem;
     --bs-btn-bg: none;
-    margin: 5px;
 }
 
 .btn:hover {
@@ -89,4 +94,5 @@ html {
 
 .image-mita.clicked {
     transform: translateY(0);
+    cursor: default;
 }

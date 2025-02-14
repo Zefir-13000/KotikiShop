@@ -2,10 +2,240 @@
     ViewData["Title"] = "Home Page";
 }
 <h1>MAKSIM LYBIT MIRU</h1>
-<div class="container">
-    <div class="products">
-        <img src="https://avatarfiles.alphacoders.com/375/375214.png">
-        <img src="https://avatarfiles.alphacoders.com/155/155507.jpg">
-        <img src="https://avatarfiles.alphacoders.com/988/thumb-1920-98825.jpg">
+
+<link rel="stylesheet" href="/css/style.css" />
+
+<div class="gallery-container">
+    <div class="gallery">
+        <div class="slide">
+            <img src="/images/newyearpromo.png">
+        </div>
+        <div class="slide">
+            <img src="/images/summerdiscount.png">
+        </div>
     </div>
+
+    <div class="dots-container"></div>
 </div>
+
+<script>
+    const gallery = document.querySelector('.gallery');
+    const slides = document.querySelectorAll('.slide');
+    const dotsContainer = document.querySelector('.dots-container');
+
+    function createDots() {
+        slides.forEach((_, index) => {
+            const dot = document.createElement('div');
+            dot.className = 'dot';
+            if (index === 0) dot.classList.add('active');
+            dotsContainer.appendChild(dot);
+        });
+    }
+
+    createDots();
+
+    const dots = document.querySelectorAll('.dot');
+
+    let currentSlide = 0;
+    const slideCount = slides.length;
+
+    let autoplayInterval = null;
+    let autoplayIsActive = false;
+
+    let userInteractionTimeout = null;
+
+    let touchStartX = 0;
+    let touchEndX = 0;
+    let isDragging = false;
+
+    let startTransform = 0;
+    let currentTransform = 0;
+
+    const AUTOPLAY_DELAY = 3000;
+    const INTERACTION_DELAY = 5500;
+
+    function updateGallery() {
+        gallery.style.transform = `translateX(-${currentSlide * 100}%)`;
+
+        dots.forEach((dot, index) => {
+            dot.classList.toggle('active', index === currentSlide);
+        });
+    }
+
+    function startAutoplay() {
+        stopAutoplay();
+        autoplayInterval = setInterval(function() {
+            currentSlide = (currentSlide + 1) % slideCount;
+            updateGallery();
+        }, AUTOPLAY_DELAY);
+    }
+
+    function stopAutoplay() {
+        if (autoplayInterval) {
+            clearInterval(autoplayInterval);
+            autoplayInterval = null;
+        }
+    }
+
+    function handleUserInteraction() {
+        stopAutoplay();
+
+        if (userInteractionTimeout) {
+            clearTimeout(userInteractionTimeout);
+        }
+
+        userInteractionTimeout = setTimeout(() => {
+            startAutoplay();
+        }, INTERACTION_DELAY);
+    }
+
+    function handleDragStart(event) {
+        isDragging = true;
+        startX = event.type.includes('mouse') ? event.clientX : event.touches[0].clientX;
+        startTransform = currentSlide * -100;
+        gallery.style.transition = 'none';
+        gallery.style.cursor = 'grabbing';
+        handleUserInteraction();
+    }
+
+    function handleDrag(event) {
+        if (!isDragging) return;
+
+        event.preventDefault();
+        currentX = event.type.includes('mouse') ? event.clientX : event.touches[0].clientX;
+        const diff = currentX - startX;
+        const newTransform = startTransform + (diff / gallery.offsetWidth * 100);
+
+        if (newTransform < (startTransform - 100) || newTransform > (startTransform + 100)) return;
+
+        currentTransform = newTransform;
+        gallery.style.transform = `translateX(${newTransform}%)`;
+    }
+
+    function handleDragEnd() {
+        if (!isDragging) return;
+        isDragging = false;
+        gallery.style.transition = 'transform 0.3s ease-out';
+        gallery.style.cursor = 'grab';
+
+        const diff = currentTransform - startTransform;
+
+        if (Math.abs(diff) > 20) {
+            if (diff > 0 && currentSlide > 0) {
+                currentSlide--;
+            } else if (diff < 0 && currentSlide < slideCount - 1) {
+                currentSlide++;
+            }
+        }
+
+        updateGallery();
+    }
+
+    // Touch Events
+    gallery.addEventListener('touchstart', handleDragStart, { passive: true });
+    gallery.addEventListener('touchmove', handleDrag, { passive: false });
+    gallery.addEventListener('touchend', handleDragEnd);
+    gallery.addEventListener('touchcancel', handleDragEnd);
+
+    // Mouse Events
+    gallery.addEventListener('mousedown', handleDragStart);
+    gallery.addEventListener('mousemove', handleDrag);
+    gallery.addEventListener('mouseup', handleDragEnd);
+    gallery.addEventListener('mouseleave', handleDragEnd);
+
+    // Prevent default drag behavior
+    gallery.addEventListener('dragstart', (e) => e.preventDefault());
+
+    dots.forEach((dot, index) => {
+        dot.addEventListener('click', () => {
+            currentSlide = index;
+            updateGallery();
+            handleUserInteraction();
+        });
+    });
+
+    startAutoplay();
+    
+</script>
+
+<!--
+<title>Photos</title>
+    <style>
+        .slider-container {
+            width: 600px; /* Ширина блока (3 картинки по 200px) */
+            overflow: hidden;
+            position: relative;
+            border: 2px solid #333;
+        }
+
+        .slider {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .slide {
+            min-width: 200px; /* Ширина одной картинки */
+            height: 150px;
+        }
+
+        .slider img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .prev { left: 0; }
+        .next { right: 0; }
+    </style>
+
+    <div class="slider-container">
+        <button class="button prev" onclick="moveSlide(-1)">❮</button>
+        <div class="slider" id="slider">
+            <div class="slide"><img src="https://lapa.shop/wp-content/uploads/2023/01/aksh1.jpg.pagespeed.ce.xLr-u-39QF.jpg" alt="1"></div>
+            <div class="slide"><img src="https://primamediamts.servicecdn.ru/f/big/1767/1766010.jpg?42c184ba1eeccccd57b78a35172aec0d" alt="2"></div>
+            <div class="slide"><img src="https://zoostar.ua/files/products/ekzotitchieskij-korotkoshierstnyj-kotik-9033_2.1024x767w.jpg?79cc223f9cc7ac08f5e48cdce2a1d617" alt="3"></div>
+            <div class="slide"><img src="https://lapa.shop/wp-content/uploads/2023/01/aksh1.jpg.pagespeed.ce.xLr-u-39QF.jpg" alt="4"></div>
+            <div class="slide"><img src="https://lapa.shop/wp-content/uploads/2024/05/sfs.jpg.pagespeed.ce.rXQaIM2Faq.jpg" alt="5"></div>
+            <div class="slide"><img src="https://cdn.riastatic.com/photosnewr/ria/news_common/kak-kupit-kotenka-bombejskoj-koshki-v-internete__2230-1680x0.jpg" alt="6"></div>
+            <div class="slide"><img src="https://img5.lalafo.com/i/posters/api/d3/12/e6/kot-na-vazku-id-45443004-800797502.jpeg" alt="7"></div>
+            <div class="slide"><img src="https://lapa.shop/wp-content/uploads/2024/05/burma.jpg.pagespeed.ce.tro8SF4hMx.jpg" alt="8"></div>
+            <div class="slide"><img src="https://lapa.shop/wp-content/uploads/2024/05/bengal.jpg.pagespeed.ce.Czf2hyoYgu.jpg" alt="9"></div>
+        </div>
+        <button class="button next" onclick="moveSlide(1)">❯</button>
+    </div>
+
+    <script>
+        let index = 0;
+ function moveSlide(direction) {
+    const totalSlides = slider.children.length;
+    const visibleSlides = 3;
+    const slideWidth = 200;
+
+    index += direction;
+
+    if (index < 0) {
+        index = totalSlides - visibleSlides; // Переход к последним 3 картинкам
+    } else if (index > totalSlides - visibleSlides) {
+        index = 0; // Переход в начало
+    }
+
+    slider.style.transform = `translateX(-${index * slideWidth}px)`;
+
+    document.querySelector(".prev").style.display = "block";
+    document.querySelector(".next").style.display = "block";
+}
+    </script>
+
+    -->

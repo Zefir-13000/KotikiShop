@@ -14,7 +14,14 @@ namespace KotikiShop.DataAccess.Repository
         public UnitOfWork(ApplicationDbContext db)
         {
             _db = db;
+            ApplicationUser = new ApplicationUserRepository(_db);
+            Cat = new CatRepository(_db);
+            CatFamily = new CatFamilyRepository(_db);
         }
+
+        public IApplicationUserRepository ApplicationUser { get; private set; }
+        public ICatRepository Cat { get; }
+        public ICatFamilyRepository CatFamily { get; }
         public void Save()
         {
             _db.SaveChanges();
