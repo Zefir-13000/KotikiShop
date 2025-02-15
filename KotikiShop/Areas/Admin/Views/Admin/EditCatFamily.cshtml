@@ -1,0 +1,24 @@
+﻿@model KotikiShop.Models.CatFamily
+
+<form method="post" asp-action="EditCatFamily">
+	<div class="border p-3 mt-4">
+		<div class="row pb-2">
+			<h2 class="text-white">Edit Cat Family</h2>
+			<hr />
+		</div>
+		@*<div asp-validation-summary="All"></div>*@
+		<div class="mb-3">
+			<label asp-for="Name"></label>
+			<input asp-for="Name" class="form-control" />
+			<span asp-validation-for="Name" class="text-danger"></span>
+		</div>
+		<button type="submit" class="btn btn-warning" style="width:150px">Update</button>
+		<a asp-controller="Admin" asp-action="ManageCatFamilies" class="btn btn-secondary" style="width:150px;">Back</a>
+	</div>
+</form>
+
+@section Scripts {
+	@{
+		<partial name="_ValidationScriptsPartial" />
+	}
+}

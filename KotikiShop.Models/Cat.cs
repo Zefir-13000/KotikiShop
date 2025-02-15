@@ -9,6 +9,11 @@ using System.Threading.Tasks;
 
 namespace KotikiShop.Models
 {
+    public enum CatGender
+    {
+        FEMALE = 0,
+        MALE = 1
+    }
     public class Cat
     {
         [Key]
@@ -20,6 +25,10 @@ namespace KotikiShop.Models
         [MaxLength(500)]
         public required string Description { get; set; }
         public float? Price { get; set; }
+        [Required]
+        public required DateOnly Birthday { get; set; }
+        [Required]
+        public required CatGender Gender { get; set; }
         public int? CatFamilyId { get; set; }
         [ForeignKey("CatFamilyId")]
         [ValidateNever]

@@ -6,9 +6,11 @@
     background-color: #828181;
 }
 
-.gallery-container {
-    width: 800px;
-    height: 220px;
+.banner-container {
+    max-width: 800px;
+    max-height: 220px;
+    width: 100%;
+    height: 100%;
     margin: 0 auto;
     position: relative;
     overflow: hidden;
@@ -16,10 +18,11 @@
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
-.gallery {
+.banner {
     display: flex;
     height: 100%;
     transition: transform 0.5s ease-in-out;
+    transform: translateX(-100%);
 }
 
 .slide {
@@ -39,7 +42,7 @@
 
 .dots-container {
     position: absolute;
-    bottom: 15px;
+    bottom: 1vh;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
