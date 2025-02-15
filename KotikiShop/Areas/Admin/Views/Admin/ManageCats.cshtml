@@ -23,24 +23,37 @@
 <table class="table table-bordered table-striped" style="width:100%">
     <thead>
         <tr>
-            <th>Cat name</th>
+            <th>Available cats</th>
             <th></th>
         </tr>
     </thead>
     <tbody>
         @foreach (var obj in Model)
         {
-                <tr>
-                    <td width="80%">
-                    @obj.Name
-                    </td>
-                    <td>
-                        <div class="w-75 btn-group" role="group">
-                            <a class="btn btn-primary mx-2" asp-controller="Admin" asp-action="EditCat" asp-route-id="@obj.Id"><i class="bi bi-pencil-square"></i> Edit</a>
-                            <a class="btn btn-danger mx-2" asp-controller="Admin" asp-action="DeleteCat" asp-route-id="@obj.Id"><i class="bi bi-trash-fill"></i> Delete</a>
-                        </div>
-                    </td>
-                </tr>
+            <tr>
+            <td colspan="2">
+                <img src="" alt="cat-image" class="img-fluid" width="100">
+            </td>
+            </tr>
+            <tr>
+                <td colspan="2" class="fw-bold">@obj.Name</td>
+            </tr>
+            <tr>
+                <td colspan="2" class="text-muted">@obj.Description</td>
+            </tr>
+            <tr>
+                <td class="fw-bold">@obj.Price</td>
+                <td>
+                    <div class="btn-group" role="group">
+                        <a class="btn btn-primary" asp-controller="Admin" asp-action="EditCat" asp-route-id="@obj.Id">
+                            <i class="bi bi-pencil-square"></i> Edit
+                        </a>
+                        <a class="btn btn-danger" asp-controller="Admin" asp-action="DeleteCat" asp-route-id="@obj.Id">
+                            <i class="bi bi-trash-fill"></i> Delete
+                        </a>
+                    </div>
+                </td>
+            </tr>
         }
     </tbody>
 </table>

@@ -14,19 +14,33 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="Customer" asp-controller="Home" asp-action="Index">KotikiShop</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+        <nav class="navbar navbar-expand-lg bg-dark shadow-lg">
+            <div class="container p-2">
+                <div class="website-logo">
+                    <a class="navbar-brand fw-bold text-uppercase" asp-area="Customer" asp-controller="Home" asp-action="Index">
+                        <image src="/images/icon.png" alt="p-icon" class="site-icon" style="width: 40px"></image>
+                        <!--<i class="bi bi-shop"></i>--> KotikiShop
+                    </a>
+                </div>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-end">
-                    <ul class="navbar-nav">
+
+                <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                    <ul class="navbar-nav align-items-center">
                         @if (User.IsInRole(SD.Role_User_Admin)) {
-                            <a class="nav-link" asp-area="Admin" asp-controller="Admin" asp-action="Index">Admin panel</a>
+                            <li class="nav-item">
+                                <a class="nav-link text-warning fw-semibold" asp-area="Admin" asp-controller="Admin" asp-action="Index">
+                                    <i class="bi bi-gear-fill"></i> Admin Panel
+                                </a>
+                            </li>
                         }
-                        <partial name="_LoginPartial" />
+
+                        <li class="nav-item">
+                            <partial name="_LoginPartial" />
+                        </li>
                     </ul>
                 </div>
             </div>

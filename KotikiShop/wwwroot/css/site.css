@@ -12,7 +12,11 @@ html {
     font-size: 30px;
     font-family: Roboto;
     font-weight: bold;
-    text-shadow: 0 0 10px #fff, 0 0 20px #e60073, 0 0 30px #e60073, 0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px;
+    
+}
+
+.website-logo {
+    filter: drop-shadow(0 0 10px #e60073) drop-shadow(0 0 35px #e60073)
 }
 
 .navbar {
@@ -68,6 +72,7 @@ html {
     height: 300px;
     object-fit: cover;
     border-radius: 8px;
+        
 }
 
 .secret-mita {
@@ -79,7 +84,6 @@ html {
     overflow: hidden;
     z-index: 100;
     transition: height 0.8s ease-out, transform 0.8s ease-out;
-    
 }
 
 .image-mita {
@@ -90,6 +94,9 @@ html {
     transform: translateY(80%);
     transition: transform 0.35s ease-out;
     cursor: pointer;
+    user-drag: none;
+    -webkit-user-drag: none;
+    -moz-user-select: none;
 }
 
 .image-mita.clicked {
