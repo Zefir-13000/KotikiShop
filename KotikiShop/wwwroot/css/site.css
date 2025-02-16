@@ -25,6 +25,43 @@ html {
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 
+.search-box {
+    border: 1px solid #212529;
+    padding: 10px 15px;
+    border-radius: 50px;
+    width: 600px;
+    outline: none;
+    background-color: #3b444b;
+    color: white;
+}
+
+.search-box::placeholder {
+    color: white;
+}
+
+.container-search {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    width: 100%;
+}
+
+.dropdown-toggle::after {
+    display: none !important;
+}
+
+.dropdown-menu {
+    transform: translateX(-5%) !important;
+    left: auto !important;
+    right: 0 !important;
+}
+
+.navbar-nav {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+
 .authorization {
     color: white;
 }
