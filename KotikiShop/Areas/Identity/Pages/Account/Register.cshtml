@@ -1,16 +1,12 @@
 ﻿@page
 @model RegisterModel
-@{
-    ViewData["Title"] = "Реєстрація";
-}
 
 <h1>@ViewData["Title"]</h1>
 
 <div class="row">
     <div class="col-md-5 mx-auto">
         <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-            <h2>Створити новий акаунт.</h2>
-            <hr />
+            <h1>Реєстрація</h1>
             <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
             <div class="form-floating mb-2">
                 <input asp-for="Input.UserName" class="form-control" autocomplete="username" aria-required="true" placeholder="name" />

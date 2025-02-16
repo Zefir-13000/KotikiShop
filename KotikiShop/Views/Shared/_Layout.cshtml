@@ -4,6 +4,7 @@
 <head>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - KotikiShop</title>
@@ -21,12 +22,33 @@
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
+                <a class ="search_box" asp-area="Customer" asp-controller="Home" asp-action="Index"></a>
+                    <div class ="container-search mx-auto">
+                        <i class="bi bi-grid fs-3 me-3"></i>
+                        <i class="bi bi-search fs-3 me-2"></i>
+                        <input type = "text" class ="search-box" placeholder="Введіть свій запит">
+                    </div>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-end">
                     <ul class="navbar-nav">
-                        @if (User.IsInRole(SD.Role_User_Admin)) {
+                    @if (User.IsInRole(SD.Role_User_Customer))
+                    {
+                        <div class="dropdown">
+                        <i class="bi bi-person-circle dropdown-toggle" id="accountDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 30px; cursor: pointer;"></i>
+                            <ul class="dropdown-menu" aria-labelledby="accountDropdown">
+                                <partial name="_LoginPartial" />
+                            </ul>
+                        </div>
+
+                        @if (User.IsInRole(SD.Role_User_Admin))
+                        {
                             <a class="nav-link" asp-area="Admin" asp-controller="Admin" asp-action="Index">Admin panel</a>
                         }
-                        <partial name="_LoginPartial" />
+                    }
+                    else
+                    {
+                                <partial name="_LoginPartial" />
+                    }
+                    
                     </ul>
                 </div>
             </div>
@@ -62,6 +84,7 @@
         });
 
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/slick/slick.min.js" asp-append-version="true"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
