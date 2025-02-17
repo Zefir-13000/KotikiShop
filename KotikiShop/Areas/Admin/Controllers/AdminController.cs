@@ -6,6 +6,7 @@ using KotikiShop.Models;
 using KotikiShop.Models.ViewModels;
 using KotikiShop.DataAccess.Migrations;
 using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace KotikiShop.Areas.Admin.Controllers
 {
@@ -20,6 +21,11 @@ namespace KotikiShop.Areas.Admin.Controllers
         {
             _hostEnviroment = hostEnviroment;
             _unitOfWork = unitOfWork;
+        }
+        public override void OnActionExecuting(ActionExecutingContext context)
+        {
+            ViewData["CatFamiliesCatalog"] = _unitOfWork.CatFamily.GetAll().ToList();
+            base.OnActionExecuting(context);
         }
         public IActionResult Index()
         {
@@ -154,7 +160,7 @@ namespace KotikiShop.Areas.Admin.Controllers
                     var extension = Path.GetExtension(file.FileName);
 
                     string ImageUrl = @"\images\cats\" + fileName + extension;
-                    if (ImageUrl != null && ImageUrl != @"\images\cats\no_picture.png")
+                    if (ImageUrl != null && ImageUrl != @"\images\no_picture.png")
                     {
                         var oldImagePath = Path.Combine(wwwRootPath, ImageUrl.TrimStart('\\'));
                         if (System.IO.File.Exists(oldImagePath))
@@ -173,6 +179,10 @@ namespace KotikiShop.Areas.Admin.Controllers
                     {
                         cat.ImageUrl = ImageUrl;
                     }
+                }
+                else
+                {
+                    cat.ImageUrl = @"\images\no_picture.png";
                 }
                 _unitOfWork.Cat.Add(cat);
                 _unitOfWork.Save();
@@ -213,7 +223,7 @@ namespace KotikiShop.Areas.Admin.Controllers
         // POST
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult EditCat([FromForm] CatVM obj, IFormFile? file)
+        public IActionResult EditCat(CatVM obj, IFormFile? file)
         {
             if (ModelState.IsValid)
             {
@@ -225,8 +235,10 @@ namespace KotikiShop.Areas.Admin.Controllers
                     Price = obj.Price ?? 0,
                     Birthday = obj.Birthday,
                     Gender = obj.Gender,
-                    CatFamilyId = obj.CatFamilyId
+                    CatFamilyId = obj.CatFamilyId,
+                    ImageUrl = obj.ImageUrl
                 };
+                var CatFromDb = _unitOfWork.Cat.GetFirstOrDefault(u => u.Id == obj.Id, tracked: false);
                 if (file != null)
                 {
                     string wwwRootPath = _hostEnviroment.WebRootPath;
@@ -235,8 +247,7 @@ namespace KotikiShop.Areas.Admin.Controllers
                     var extension = Path.GetExtension(file.FileName);
 
                     string ImageUrl = @"\images\cats\" + fileName + extension;
-                    var CatFromDb = _unitOfWork.Cat.GetFirstOrDefault(u => u.Id == cat.Id);
-                    if (CatFromDb.ImageUrl != null && CatFromDb.ImageUrl != @"\images\cats\no_picture.png")
+                    if (CatFromDb.ImageUrl != null && CatFromDb.ImageUrl != @"\images\no_picture.png")
                     {
                         var oldImagePath = Path.Combine(wwwRootPath, CatFromDb.ImageUrl.TrimStart('\\'));
                         if (System.IO.File.Exists(oldImagePath))
@@ -256,6 +267,11 @@ namespace KotikiShop.Areas.Admin.Controllers
                         cat.ImageUrl = ImageUrl;
                     }
                 }
+                else
+                {
+                    cat.ImageUrl = CatFromDb.ImageUrl ?? @"\images\no_picture.png";
+                }
+
                 _unitOfWork.Cat.Update(cat);
                 _unitOfWork.Save();
                 TempData["success"] = "Cat updated succsessfully!";
@@ -289,6 +305,15 @@ namespace KotikiShop.Areas.Admin.Controllers
             {
                 return NotFound();
             }
+            string wwwRootPath = _hostEnviroment.WebRootPath;
+            if (obj.ImageUrl != null && obj.ImageUrl != @"\images\no_picture.png")
+            {
+                var oldImagePath = Path.Combine(wwwRootPath, obj.ImageUrl.TrimStart('\\'));
+                if (System.IO.File.Exists(oldImagePath))
+                {
+                    System.IO.File.Delete(oldImagePath);
+                }
+            }
 
             _unitOfWork.Cat.Remove(obj);
             _unitOfWork.Save();
@@ -298,7 +323,7 @@ namespace KotikiShop.Areas.Admin.Controllers
 
         public IActionResult ManageCats()
         {
-            var Cats = _unitOfWork.Cat.GetAll();
+            var Cats = _unitOfWork.Cat.GetAll(includeProperties: "CatFamily");
             return View(Cats);
         }
     }

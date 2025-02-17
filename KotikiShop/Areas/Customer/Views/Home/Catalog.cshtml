@@ -1,29 +1,14 @@
 ﻿@model IEnumerable<KotikiShop.Models.Cat>
 @{
-    ViewData["Title"] = "Manage Cats";
+	ViewData["Title"] = "Catalog";
 }
 
 <h1 style="text-align: center;" class="pt-3">@ViewData["Title"]</h1>
 
-<div class="container">
-    <div class="row pt-4">
-        <div class="col-6">
-            <h2 class="text-white">Cat List</h>
-        </div>
-        <div class="col-6 text-end" style="padding-right:0;">
-            <a asp-controller="Admin" asp-action="CreateCat" class="btn btn-primary">
-                <i class="bi bi-plus-circle"></i>
-                Create New Cat
-            </a>
-        </div>
-    </div>
-    <br />
-</div>
-
 <div class="row">
     @foreach (var obj in Model)
     {
-        <div class="col-sm-4 mb-3">
+        <div class="col-sm-4">
             <div class="card" style="width: 18rem;">
                 <img src="@obj.ImageUrl" alt="cat-image" class="card-img-top">
                 <div class="card-body">
@@ -39,11 +24,8 @@
                     </div>
                     <hr>
                     <div class="d-flex flex-row gap-2" role="group">
-                        <a class="btn btn-primary w-100" asp-controller="Admin" asp-action="EditCat" asp-route-id="@obj.Id">
-                            <i class="bi bi-pencil-square"></i> Edit
-                        </a>
-                        <a class="btn btn-danger w-100" asp-controller="Admin" asp-action="DeleteCat" asp-route-id="@obj.Id">
-                            <i class="bi bi-trash-fill"></i> Delete
+                        <a class="btn btn-primary w-100" asp-controller="Home" asp-action="OrderDetails" asp-route-id="@obj.Id">
+                                <i class="bi bi-bag me-1"></i>Buy
                         </a>
                     </div>
                 </div>

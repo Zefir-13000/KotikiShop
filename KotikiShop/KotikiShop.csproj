@@ -37,8 +37,4 @@
     <ProjectReference Include="..\KotikiShop.Utility\KotikiShop.Utility.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Areas\Customer\Views\Customer\" />
-  </ItemGroup>
-
 </Project>

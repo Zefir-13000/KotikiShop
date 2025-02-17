@@ -1,4 +1,7 @@
 ﻿@using KotikiShop.Utility
+@{
+    var viewModel = ViewBag.CatFamiliesCatalog as List<CatFamily>;
+}
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="dark">
 <head>
@@ -16,34 +19,56 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-lg bg-dark shadow-lg">
-            <div class="container p-2">
-                <div class="website-logo">
+        <nav class="navbar bg-dark shadow-lg">
+            <div class="container d-flex justify-content-between">
+                <!-- WEBSITE LOGO -->
+                <div class="website-logo d-flex align-items-center">
                     <a class="navbar-brand fw-bold text-uppercase" asp-area="Customer" asp-controller="Home" asp-action="Index">
-                        <image src="/images/icon.png" alt="p-icon" class="site-icon" style="width: 40px"></image> КОТЫШОП
+                        <image src="/images/icon.png" alt="p-icon" class="site-icon" style="width: 40px"></image> KotikiShop
                     </a>
                 </div>
 
-                <div class ="container-grid d-flex align-items-center">
-                    <div class="dropdown">
-                        <i class="bi bi-grid dropdown-toggle fs-4 me-3" id="catalogDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 30px; cursor: pointer;"></i>
-                        <ul class="dropdown-menu grid-menu" aria-labelledby="catalogDropdown">         
-                            test <!--тут поменять надо на каталог-->
-                        </ul>
-                    </div>
-                    <i class="bi bi-search fs-4 me-1"></i>
-                    <input type = "text" class ="search-box" placeholder="Введіть свій запит">
-                </div>
+                <!-- SEARCH AND CATALOG -->
+                <div class="d-flex align-items-center">
+                    <div class="dropdown position-static me-2">
+                        <button id="catalogDropdown" class="btn btn-dark shadow-none" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+                            <i class="bi bi-grid fs-4"></i>
+                        </button>
 
-                <ul class="navbar-nav d-flex flex-row align-items-center justify-content-end">
+                        <div class="dropdown-menu dropdown-menu-start w-25 shadow-lg border-0 start-50 translate-middle-x mt-2">
+                            <div class="dropdown-grid">
+                                <h6 class="dropdown-header">Cat Families</h6>
+                                @* <a class="dropdown-item" href="#">Item</a> *@
+                                @foreach (var item in viewModel)
+                                {
+                                    <a class="dropdown-item" asp-area="Customer" asp-controller="Home" asp-action="Catalog" asp-route-family="@item.Name">@item.Name</a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    <i class="bi bi-search fs-4 me-1"></i>
+                    <div class="search-container">
+                        <input type="text" class="search-box" placeholder="Введіть свій запит">
+                    </div>
+                </div>
+                <div class="d-flex align-items-center">
                     @if (User.IsInRole(SD.Role_User_Customer) || User.IsInRole(SD.Role_User_Admin))
                     {
+                        <!-- CART -->
                         <i class="bi bi-cart4 fs-4 me-4"></i>
+
+                        <!-- ACCOUNT -->
                         <div class="dropdown">
-                            <i class="bi bi-person-circle dropdown-toggle" id="accountDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 30px; cursor: pointer;"></i>
-                            <ul class="dropdown-menu" aria-labelledby="accountDropdown">
-                                <partial name="_LoginPartial" />
-                            </ul>
+                            <button id="accountDropdown" class="btn btn-dark shadow-none" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+                                <i class="bi bi-person-circle fs-4"></i>
+                            </button>
+
+                            <div id="accountDropdown" class="dropdown-menu dropdown-menu-start text-center">
+                                <div class="dropdown-grid mx-2">
+                                    <partial name="_LoginPartial" />
+                                </div>
+                            </div>
                         </div>
 
                         @if (User.IsInRole(SD.Role_User_Admin))
@@ -53,12 +78,15 @@
                     }
                     else
                     {
-                        <partial name="_LoginPartial" />
+                        <ul class="navbar-nav d-flex flex-row align-items-center justify-content-end">
+                            <partial name="_LoginPartial" />
+                        </ul>
                     }
-                </ul>
+                </div>
             </div>
         </nav>
     </header>
+
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
@@ -67,28 +95,10 @@
 
     <footer class="footer text-muted">
         <div class="secret-mita">
-            <img class="image-mita" draggable="false" src="~/images/mita.png">
+            <img id="mita-clickable" class="image-mita" draggable="false" src="~/images/mita.png">
         </div>
     </footer>
-    <script>
-        var audio = new Audio('/audio/mita-sound.mp3');
 
-        document.getElementsByClassName('image-mita')[0].addEventListener('click', function () {
-            if (!this.classList.contains('clicked')) {
-                this.classList.add('clicked');
-                audio.play();
-            };
-        });
-
-        document.getElementsByClassName('image-mita')[0].addEventListener('mouseout', function () {
-            if (this.classList.contains('clicked')) {
-                setTimeout(() => {
-                    this.classList.remove('clicked');
-                }, 100);
-            }
-        });
-
-    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/slick/slick.min.js" asp-append-version="true"></script>

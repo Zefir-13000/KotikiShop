@@ -2,18 +2,22 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
-function readURL(input) {
-    if (input.files && input.files[0]) {
-        var reader = new FileReader();
 
-        reader.onload = function (e) {
-            $('#image_upload_preview').attr('src', e.target.result);
-        }
+// MITA IMAGE
+const mitaImage = document.getElementById('mita-clickable');
+var audio = new Audio('/audio/mita-sound.mp3');
 
-        reader.readAsDataURL(input.files[0]);
+mitaImage.addEventListener('click', function () {
+    if (!this.classList.contains('clicked')) {
+        this.classList.add('clicked');
+        audio.play();
+    };
+});
+
+mitaImage.addEventListener('mouseout', function () {
+    if (this.classList.contains('clicked')) {
+        setTimeout(() => {
+            this.classList.remove('clicked');
+        }, 100);
     }
-}
-
-$("#inputFile").change(function () {
-    readURL(this);
 });

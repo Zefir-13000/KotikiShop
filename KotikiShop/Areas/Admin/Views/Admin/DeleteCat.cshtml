@@ -1,4 +1,4 @@
-﻿@model KotikiShop.Models.CatFamily
+﻿@model KotikiShop.Models.Cat
 
 <form method="post" asp-action="DeleteCat">
 	<input asp-for="Id" hidden />
@@ -8,10 +8,6 @@
 			<hr />
 		</div>
 		@*<div asp-validation-summary="All"></div>*@
-		<div class="mb-3">
-			<label asp-for="Name"></label>
-			<input asp-for="Name" disabled class="form-control" />
-		</div>
 		<button type="submit" class="btn btn-danger" style="width:150px">Delete</button>
 		<a asp-controller="Admin" asp-action="ManageCats" class="btn btn-secondary" style="width:150px;">Back</a>
 	</div>
