@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<KotikiShop.Models.Cat>
 @{
-    ViewData["Title"] = "Manage Cat Families";
+    ViewData["Title"] = "Manage Cats";
 }
 
 <h1 style="text-align: center;" class="pt-3">@ViewData["Title"]</h1>
@@ -32,7 +32,7 @@
         {
             <tr>
             <td colspan="2">
-                <img src="" alt="cat-image" class="img-fluid" width="100">
+                <img src="@obj.ImageUrl" alt="cat-image" class="img-fluid" width="100">
             </td>
             </tr>
             <tr>
@@ -48,8 +48,8 @@
                         <a class="btn btn-primary" asp-controller="Admin" asp-action="EditCat" asp-route-id="@obj.Id">
                             <i class="bi bi-pencil-square"></i> Edit
                         </a>
-                        <a class="btn btn-danger" asp-controller="Admin" asp-action="DeleteCat" asp-route-id="@obj.Id">
-                            <i class="bi bi-trash-fill"></i> Delete
+                            <a class="btn btn-danger mx-2" asp-controller="Admin" asp-action="DeleteCat" asp-route-id="@obj.Id">
+                                <i class="bi bi-trash-fill mx-2"></i> Delete
                         </a>
                     </div>
                 </td>

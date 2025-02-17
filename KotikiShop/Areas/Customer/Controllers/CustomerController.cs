@@ -7,9 +7,5 @@ namespace KotikiShop.Areas.Customer.Controllers
     [Authorize]
     public class CustomerController : Controller
     {
-        public IActionResult Index()
-        {
-            return View();
-        }
     }
 }

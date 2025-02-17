@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/KotikiShop.styles.css" asp-append-version="true" />
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 </head>
 <body>
@@ -19,27 +20,27 @@
             <div class="container p-2">
                 <div class="website-logo">
                     <a class="navbar-brand fw-bold text-uppercase" asp-area="Customer" asp-controller="Home" asp-action="Index">
-                        <image src="/images/icon.png" alt="p-icon" class="site-icon" style="width: 40px"></image>
-                        <!--<i class="bi bi-shop"></i>--> KotikiShop
+                        <image src="/images/icon.png" alt="p-icon" class="site-icon" style="width: 40px"></image> КОТЫШОП
                     </a>
                 </div>
 
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <a class ="search_box" asp-area="Customer" asp-controller="Home" asp-action="Index"></a>
-                    <div class ="container-search mx-auto">
-                        <i class="bi bi-grid fs-3 me-3"></i>
-                        <i class="bi bi-search fs-3 me-2"></i>
-                        <input type = "text" class ="search-box" placeholder="Введіть свій запит">
+                <div class ="container-grid d-flex align-items-center">
+                    <div class="dropdown">
+                        <i class="bi bi-grid dropdown-toggle fs-4 me-3" id="catalogDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 30px; cursor: pointer;"></i>
+                        <ul class="dropdown-menu grid-menu" aria-labelledby="catalogDropdown">         
+                            test <!--тут поменять надо на каталог-->
+                        </ul>
                     </div>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-end">
-                    <ul class="navbar-nav">
-                    @if (User.IsInRole(SD.Role_User_Customer))
+                    <i class="bi bi-search fs-4 me-1"></i>
+                    <input type = "text" class ="search-box" placeholder="Введіть свій запит">
+                </div>
+
+                <ul class="navbar-nav d-flex flex-row align-items-center justify-content-end">
+                    @if (User.IsInRole(SD.Role_User_Customer) || User.IsInRole(SD.Role_User_Admin))
                     {
+                        <i class="bi bi-cart4 fs-4 me-4"></i>
                         <div class="dropdown">
-                        <i class="bi bi-person-circle dropdown-toggle" id="accountDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 30px; cursor: pointer;"></i>
+                            <i class="bi bi-person-circle dropdown-toggle" id="accountDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 30px; cursor: pointer;"></i>
                             <ul class="dropdown-menu" aria-labelledby="accountDropdown">
                                 <partial name="_LoginPartial" />
                             </ul>
@@ -52,10 +53,9 @@
                     }
                     else
                     {
-                                <partial name="_LoginPartial" />
+                        <partial name="_LoginPartial" />
                     }
-                    </ul>
-                </div>
+                </ul>
             </div>
         </nav>
     </header>
@@ -67,7 +67,7 @@
 
     <footer class="footer text-muted">
         <div class="secret-mita">
-            <img class="image-mita" src="/images/mita.png">
+            <img class="image-mita" draggable="false" src="~/images/mita.png">
         </div>
     </footer>
     <script>

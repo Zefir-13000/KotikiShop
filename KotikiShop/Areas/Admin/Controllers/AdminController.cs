@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Authorization;
 using KotikiShop.DataAccess.Repository.IRepository;
 using Microsoft.AspNetCore.Identity;
 using KotikiShop.Models;
+using KotikiShop.Models.ViewModels;
+using KotikiShop.DataAccess.Migrations;
+using Microsoft.Extensions.Hosting;
 
 namespace KotikiShop.Areas.Admin.Controllers
 {
@@ -10,10 +13,12 @@ namespace KotikiShop.Areas.Admin.Controllers
     [Authorize]
     public class AdminController : Controller
     {
+        private readonly IWebHostEnvironment _hostEnviroment;
         private readonly IUnitOfWork _unitOfWork;
 
-        public AdminController(IUnitOfWork unitOfWork)
+        public AdminController(IWebHostEnvironment hostEnviroment, IUnitOfWork unitOfWork)
         {
+            _hostEnviroment = hostEnviroment;
             _unitOfWork = unitOfWork;
         }
         public IActionResult Index()
@@ -79,12 +84,12 @@ namespace KotikiShop.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var SpecialityFromDb = _unitOfWork.CatFamily.GetFirstOrDefault(u => u.Id == id);
-            if (SpecialityFromDb == null)
+            var CatFamilyFromDb = _unitOfWork.CatFamily.GetFirstOrDefault(u => u.Id == id);
+            if (CatFamilyFromDb == null)
             {
                 return NotFound();
             }
-            return View(SpecialityFromDb);
+            return View(CatFamilyFromDb);
         }
 
         // POST
@@ -108,6 +113,187 @@ namespace KotikiShop.Areas.Admin.Controllers
         {
             var CatFamilies = _unitOfWork.CatFamily.GetAll();
             return View(CatFamilies);
+        }
+
+        public IActionResult CreateCat()
+        {
+            var catFamilies = _unitOfWork.CatFamily.GetAll();
+            CatVM catVM = new CatVM
+            {
+                catFamilies = catFamilies,
+                Name = "",
+                Description  = "",
+                Birthday = DateOnly.FromDateTime(DateTime.Now),
+                Gender = CatGender.NONE
+            };
+            return View(catVM);
+        }
+
+        // POST
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult CreateCat([FromForm] CatVM obj, IFormFile? file)
+        {
+            if (ModelState.IsValid)
+            {
+                Console.WriteLine(file.FileName);
+                Cat cat = new()
+                {
+                    Name = obj.Name,
+                    Description = obj.Description,
+                    Price = obj.Price ?? 0,
+                    Birthday = obj.Birthday,
+                    Gender = obj.Gender,
+                    CatFamilyId = obj.CatFamilyId
+                };
+                if (file != null)
+                {
+                    string wwwRootPath = _hostEnviroment.WebRootPath;
+                    string fileName = Guid.NewGuid().ToString();
+                    var uploads = Path.Combine(wwwRootPath, @"images\cats");
+                    var extension = Path.GetExtension(file.FileName);
+
+                    string ImageUrl = @"\images\cats\" + fileName + extension;
+                    if (ImageUrl != null && ImageUrl != @"\images\cats\no_picture.png")
+                    {
+                        var oldImagePath = Path.Combine(wwwRootPath, ImageUrl.TrimStart('\\'));
+                        if (System.IO.File.Exists(oldImagePath))
+                        {
+                            System.IO.File.Delete(oldImagePath);
+                        }
+                    }
+
+                    using (var fileStreams = new FileStream(Path.Combine(uploads, fileName + extension), FileMode.Create))
+                    {
+                        file.CopyTo(fileStreams);
+                    }
+
+
+                    if (cat != null)
+                    {
+                        cat.ImageUrl = ImageUrl;
+                    }
+                }
+                _unitOfWork.Cat.Add(cat);
+                _unitOfWork.Save();
+                TempData["success"] = "Cat created succsessfully!";
+                return RedirectToAction("ManageCats");
+            }
+            return View(obj);
+        }
+
+        public IActionResult EditCat(int? id)
+        {
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+
+            var CatFromDb = _unitOfWork.Cat.GetFirstOrDefault(u => u.Id == id);
+            if (CatFromDb == null)
+            {
+                return NotFound();
+            }
+
+            var catFamilies = _unitOfWork.CatFamily.GetAll();
+            CatVM catVM = new()
+            {
+                catFamilies = catFamilies,
+                Name = CatFromDb.Name,
+                Description = CatFromDb.Description,
+                Price = CatFromDb.Price,
+                Birthday = CatFromDb.Birthday,
+                Gender = CatFromDb.Gender,
+                ImageUrl = CatFromDb.ImageUrl,
+                CatFamilyId = CatFromDb.CatFamilyId
+            };
+            return View(catVM);
+        }
+
+        // POST
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult EditCat([FromForm] CatVM obj, IFormFile? file)
+        {
+            if (ModelState.IsValid)
+            {
+                Cat cat = new()
+                {
+                    Id = obj.Id,
+                    Name = obj.Name,
+                    Description = obj.Description,
+                    Price = obj.Price ?? 0,
+                    Birthday = obj.Birthday,
+                    Gender = obj.Gender,
+                    CatFamilyId = obj.CatFamilyId
+                };
+                if (file != null)
+                {
+                    string wwwRootPath = _hostEnviroment.WebRootPath;
+                    string fileName = Guid.NewGuid().ToString();
+                    var uploads = Path.Combine(wwwRootPath, @"images\cats");
+                    var extension = Path.GetExtension(file.FileName);
+
+                    string ImageUrl = @"\images\cats\" + fileName + extension;
+                    var CatFromDb = _unitOfWork.Cat.GetFirstOrDefault(u => u.Id == cat.Id);
+                    if (CatFromDb.ImageUrl != null && CatFromDb.ImageUrl != @"\images\cats\no_picture.png")
+                    {
+                        var oldImagePath = Path.Combine(wwwRootPath, CatFromDb.ImageUrl.TrimStart('\\'));
+                        if (System.IO.File.Exists(oldImagePath))
+                        {
+                            System.IO.File.Delete(oldImagePath);
+                        }
+                    }
+
+                    using (var fileStreams = new FileStream(Path.Combine(uploads, fileName + extension), FileMode.Create))
+                    {
+                        file.CopyTo(fileStreams);
+                    }
+
+
+                    if (cat != null)
+                    {
+                        cat.ImageUrl = ImageUrl;
+                    }
+                }
+                _unitOfWork.Cat.Update(cat);
+                _unitOfWork.Save();
+                TempData["success"] = "Cat updated succsessfully!";
+                return RedirectToAction("ManageCats");
+            }
+            return View(obj);
+        }
+
+        public IActionResult DeleteCat(int? id)
+        {
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+
+            var CatFromDb = _unitOfWork.Cat.GetFirstOrDefault(u => u.Id == id);
+            if (CatFromDb == null)
+            {
+                return NotFound();
+            }
+            return View(CatFromDb);
+        }
+
+        // POST
+        [HttpPost, ActionName("DeleteCat")]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteCatPOST(int? id)
+        {
+            var obj = _unitOfWork.Cat.GetFirstOrDefault(u => u.Id == id);
+            if (obj == null)
+            {
+                return NotFound();
+            }
+
+            _unitOfWork.Cat.Remove(obj);
+            _unitOfWork.Save();
+            TempData["success"] = "Cat deleted succsessfully!";
+            return RedirectToAction("ManageCats");
         }
 
         public IActionResult ManageCats()

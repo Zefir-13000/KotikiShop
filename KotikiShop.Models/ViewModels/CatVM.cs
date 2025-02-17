@@ -1,23 +1,17 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KotikiShop.Models
+namespace KotikiShop.Models.ViewModels
 {
-    public enum CatGender
+    public class CatVM
     {
-        FEMALE = 0,
-        MALE = 1,
-        NONE = 2,
-    }
-    public class Cat
-    {
-        [Key]
+        public IEnumerable<CatFamily>? catFamilies = new List<CatFamily>();
         public int Id { get; set; }
         [Required]
         [MaxLength(120)]
