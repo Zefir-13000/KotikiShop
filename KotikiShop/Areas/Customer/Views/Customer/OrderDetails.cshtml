@@ -1,5 +1,45 @@
 ﻿@model KotikiShop.Models.Cat
+
 @{
-	ViewData["Title"] = "Order Details";
+    ViewData["Title"] = "Order Details";
 }
 
+<div class="container mt-4">
+    <div class="row">
+        <div class="">
+            <button type="button" class="btn">Все про кота</button>
+            <button type="button" class="btn">Детальніше</button>
+            <button type="button" class="btn">Питання</button>
+        </div
+
+        <div>
+            <div class="col-md-4">
+                <img src="@Model.ImageUrl" alt="@Model.Name" class="img-fluid rounded shadow">
+            </div>
+
+            <div class="col-md-6">
+                <h2>@Model.Name</h2>
+                <p>@Model.Description</p>
+
+                <h3 class="text-danger">@Model.Price ETH</h3>
+
+                <ul class="list-group">
+                    <li class="list-group-item"><strong>Дата народження:</strong> @Model.Birthday</li>
+                    <li class="list-group-item">
+                        <strong>Стать:</strong> @(Model.Gender == KotikiShop.Models.CatGender.MALE ? "Чоловіча" : "Жіноча")
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Порода:</strong> @(Model.CatFamily != null ? Model.CatFamily.Name : "Невідомо")
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Ціна:</strong> <span class="fw-bold">@Model.Price ETH</span>
+                    </li>
+                </ul>
+
+                <a href="#" class="btn btn-primary mt-3 w-100">
+                    <i class="bi bi-cart"></i> Додати до кошика
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

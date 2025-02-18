@@ -24,7 +24,7 @@ namespace KotikiShop.Areas.Admin.Controllers
         }
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            ViewData["CatFamiliesCatalog"] = _unitOfWork.CatFamily.GetAll().ToList();
+            ViewData["CatFamiliesCatalog"] = _unitOfWork.CatFamily.GetAllAsNoTracking().ToList();
             base.OnActionExecuting(context);
         }
         public IActionResult Index()
@@ -142,7 +142,6 @@ namespace KotikiShop.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                Console.WriteLine(file.FileName);
                 Cat cat = new()
                 {
                     Name = obj.Name,

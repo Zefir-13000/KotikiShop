@@ -20,16 +20,16 @@
 <body>
     <header>
         <nav class="navbar bg-dark shadow-lg">
-            <div class="container d-flex justify-content-between">
+            <div class="container d-inline-flex justify-content-between">
                 <!-- WEBSITE LOGO -->
-                <div class="website-logo d-flex align-items-center">
+                <div class="website-logo d-inline-flex align-items-center">
                     <a class="navbar-brand fw-bold text-uppercase" asp-area="Customer" asp-controller="Home" asp-action="Index">
                         <image src="/images/icon.png" alt="p-icon" class="site-icon" style="width: 40px"></image> KotikiShop
                     </a>
                 </div>
 
                 <!-- SEARCH AND CATALOG -->
-                <div class="d-flex align-items-center">
+                <div class="d-inline-flex align-items-center w-50" style="min-width: 205px;">
                     <div class="dropdown position-static me-2">
                         <button id="catalogDropdown" class="btn btn-dark shadow-none" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
                             <i class="bi bi-grid fs-4"></i>
@@ -38,21 +38,21 @@
                         <div class="dropdown-menu dropdown-menu-start w-25 shadow-lg border-0 start-50 translate-middle-x mt-2">
                             <div class="dropdown-grid">
                                 <h6 class="dropdown-header">Cat Families</h6>
-                                @* <a class="dropdown-item" href="#">Item</a> *@
-                                @foreach (var item in viewModel)
-                                {
-                                    <a class="dropdown-item" asp-area="Customer" asp-controller="Home" asp-action="Catalog" asp-route-family="@item.Name">@item.Name</a>
+                                <a class="dropdown-item" asp-area="Customer" asp-controller="Home" asp-action="Catalog" asp-route-family="">Все</a>
+                                @if (viewModel != null) {
+                                    @foreach (var item in viewModel)
+                                    {
+                                        <a class="dropdown-item" asp-area="Customer" asp-controller="Home" asp-action="Catalog" asp-route-family="@item.Name">@item.Name</a>
+                                    }   
                                 }
                             </div>
                         </div>
                     </div>
 
                     <i class="bi bi-search fs-4 me-1"></i>
-                    <div class="search-container">
-                        <input type="text" class="search-box" placeholder="Введіть свій запит">
-                    </div>
+                    <input class="form-control rounded-4 bg-dark text-light w-100" type="text" placeholder="Введіть свій запит">
                 </div>
-                <div class="d-flex align-items-center">
+                <div class="d-inline-flex align-items-center">
                     @if (User.IsInRole(SD.Role_User_Customer) || User.IsInRole(SD.Role_User_Admin))
                     {
                         <!-- CART -->

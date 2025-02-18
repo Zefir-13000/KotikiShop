@@ -93,6 +93,7 @@ namespace KotikiShop.Areas.Identity.Pages.Account.Manage
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
+            
             await LoadAsync(user);
             return Page();
         }

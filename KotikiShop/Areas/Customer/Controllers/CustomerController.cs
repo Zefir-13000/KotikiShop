@@ -15,9 +15,16 @@ namespace KotikiShop.Areas.Customer.Controllers
         {
             _unitOfWork = unitOfWork;
         }
+
         public IActionResult OrderDetails(int? id)
         {
-            Cat cat = _unitOfWork.Cat.GetFirstOrDefault(u => u.Id == id);
+            var cat = _unitOfWork.Cat.GetFirstOrDefault(u => u.Id == id, includeProperties: "CatFamily");
+
+            if (cat == null)
+            {
+                return NotFound();
+            }
+
             return View(cat);
         }
     }
