@@ -1,6 +1,7 @@
 ﻿using KotikiShop.DataAccess.Repository.IRepository;
 using KotikiShop.Models;
 using KotikiShop.Utility;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Diagnostics;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -11,15 +12,20 @@ namespace KotikiShop.Areas.Customer.Controllers
     [Area("Customer")]
     public class HomeController : Controller
     {
+        private readonly UserManager<IdentityUser> _userManager;
         private readonly IUnitOfWork _unitOfWork;
 
-        public HomeController(IUnitOfWork unitOfWork)
+        public HomeController(IUnitOfWork unitOfWork, UserManager<IdentityUser> userManager)
         {
+            _userManager = userManager;
             _unitOfWork = unitOfWork;
         }
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             ViewData["CatFamiliesCatalog"] = _unitOfWork.CatFamily.GetAllAsNoTracking().ToList();
+            var userId = _userManager.GetUserId(User);
+            var cart = _unitOfWork.Cart.GetFirstOrDefault(u => u.ApplicationUserId == userId, includeProperties: "CartItems");
+            ViewData["UserCartCount"] = cart.TotalItems;
             base.OnActionExecuting(context);
         }
         public IActionResult Index()
@@ -39,33 +45,58 @@ namespace KotikiShop.Areas.Customer.Controllers
             return View();
         }
 
-        public IActionResult Catalog(string? family, int? age, int? price, string? gender)
+        public IActionResult Catalog(string? family, int? age, int? price, string? gender, string? search)
         {
-            var cats = _unitOfWork.Cat.GetAll(includeProperties: "CatFamily");
+            
+            IEnumerable<Cat> cats = _unitOfWork.Cat.GetAll(includeProperties: "CatFamily");
 
-            if (family != null)
+            if (!string.IsNullOrEmpty(search))
             {
-                cats = cats.Where(u => u.CatFamily.Name.ToLower() == family.ToLower());
+                string lowerSearch = search.ToLower();
+                cats = cats.Where(u => u.Name.ToLower().Contains(lowerSearch) ||
+                                       (!string.IsNullOrEmpty(u.Description) && u.Description.ToLower().Contains(lowerSearch)));
             }
 
+            
+            if (!string.IsNullOrEmpty(family))
+            {
+                string lowerFamily = family.ToLowerInvariant();
+                cats = cats.Where(u => u.CatFamily != null && u.CatFamily.Name.ToLowerInvariant() == lowerFamily);
+            }
+
+            
             if (age.HasValue)
             {
-                DateOnly ageThreshold = DateOnly.FromDateTime(DateTime.Today.AddYears(-age.Value));
-                cats = cats.Where(u => u.Birthday <= ageThreshold);
+                DateOnly today = DateOnly.FromDateTime(DateTime.Today);
+
+                if (age.Value == 1)
+                {
+                    
+                    DateOnly oneYearAgo = today.AddYears(-1);
+                    cats = cats.Where(u => u.Birthday > oneYearAgo);
+                }
+                else
+                {
+                   
+                    DateOnly ageThreshold = today.AddYears(-(age.Value-1));
+                    cats = cats.Where(u => u.Birthday <= ageThreshold);
+                }
             }
 
-            if (price.HasValue)
+            
+            if (price.HasValue && price.Value > 0)
             {
                 cats = cats.Where(u => u.Price.HasValue && u.Price.Value <= price.Value);
             }
 
-            if (!string.IsNullOrEmpty(gender) && gender.ToLower() != "all")
+            
+            if (!string.IsNullOrEmpty(gender) && gender.ToLowerInvariant() != "all")
             {
-                if (gender.ToLower() == "male")
+                if (gender.ToLowerInvariant() == "male")
                 {
                     cats = cats.Where(u => u.Gender == CatGender.MALE);
                 }
-                else if (gender.ToLower() == "female")
+                else if (gender.ToLowerInvariant() == "female")
                 {
                     cats = cats.Where(u => u.Gender == CatGender.FEMALE);
                 }
@@ -81,6 +112,4 @@ namespace KotikiShop.Areas.Customer.Controllers
             return RedirectToAction("Catalog", family);
         }
     }
-
-
 }

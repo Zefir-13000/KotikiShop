@@ -1,6 +1,7 @@
 ﻿@using KotikiShop.Utility
 @{
     var viewModel = ViewBag.CatFamiliesCatalog as List<CatFamily>;
+    var cartCount = ViewBag.UserCartCount as int?;
 }
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="dark">
@@ -20,7 +21,7 @@
 <body>
     <header>
         <nav class="navbar bg-dark shadow-lg">
-            <div class="container d-inline-flex justify-content-between">
+            <div class="container d-inline-flex flex-wrap">
                 <!-- WEBSITE LOGO -->
                 <div class="website-logo d-inline-flex align-items-center">
                     <a class="navbar-brand fw-bold text-uppercase" asp-area="Customer" asp-controller="Home" asp-action="Index">
@@ -31,36 +32,48 @@
                 <!-- SEARCH AND CATALOG -->
                 <div class="d-inline-flex align-items-center w-50" style="min-width: 205px;">
                     <div class="dropdown position-static me-2">
-                        <button id="catalogDropdown" class="btn btn-dark shadow-none" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+                        <button id="catalogDropdown" class="btn btn-dark shadow-none border-0" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
                             <i class="bi bi-grid fs-4"></i>
                         </button>
-
                         <div class="dropdown-menu dropdown-menu-start w-25 shadow-lg border-0 start-50 translate-middle-x mt-2">
                             <div class="dropdown-grid">
                                 <h6 class="dropdown-header">Cat Families</h6>
                                 <a class="dropdown-item" asp-area="Customer" asp-controller="Home" asp-action="Catalog" asp-route-family="">Все</a>
-                                @if (viewModel != null) {
-                                    @foreach (var item in viewModel)
+                                    @if (viewModel != null)
                                     {
-                                        <a class="dropdown-item" asp-area="Customer" asp-controller="Home" asp-action="Catalog" asp-route-family="@item.Name">@item.Name</a>
-                                    }   
-                                }
+                                        @foreach (var item in viewModel)
+                                        {
+                                            <a class="dropdown-item" asp-area="Customer" asp-controller="Home" asp-action="Catalog" asp-route-family="@item.Name">@item.Name</a>
+                                        }   
+                                    }
                             </div>
                         </div>
                     </div>
-
-                    <i class="bi bi-search fs-4 me-1"></i>
-                    <input class="form-control rounded-4 bg-dark text-light w-100" type="text" placeholder="Введіть свій запит">
+ 
+                    <form method="get" action="@Url.Action("Catalog", "Home")" class="d-flex w-100">
+                        <i class="bi bi-search fs-4 me-1"></i>
+                        <input class="form-control rounded-4 bg-dark text-light w-100" type="text" name="search" placeholder="Введіть свій запит" />
+                    </form>
                 </div>
+
+
                 <div class="d-inline-flex align-items-center">
                     @if (User.IsInRole(SD.Role_User_Customer) || User.IsInRole(SD.Role_User_Admin))
                     {
                         <!-- CART -->
-                        <i class="bi bi-cart4 fs-4 me-4"></i>
+                        <button class="btn btn-dark border-0 me-3 shadow-none position-relative" type="button">
+                            <a class="nav-link" asp-area="Customer" asp-controller="Customer" asp-action="Cart">
+                                <i class="bi bi-cart4 fs-4"></i>
+                            </a>
+                            @if (cartCount != null && cartCount > 0)
+                            {
+                                <span class="position-absolute translate-middle badge rounded-pill bg-danger" style="top: 80%; left: 80%; padding: 0.25em 0.45em;">@cartCount</span>
+                            }
+                        </button>
 
                         <!-- ACCOUNT -->
                         <div class="dropdown">
-                            <button id="accountDropdown" class="btn btn-dark shadow-none" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+                            <button id="accountDropdown" class="btn btn-dark border-0 shadow-none" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
                                 <i class="bi bi-person-circle fs-4"></i>
                             </button>
 

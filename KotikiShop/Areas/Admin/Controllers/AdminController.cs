@@ -15,16 +15,21 @@ namespace KotikiShop.Areas.Admin.Controllers
     public class AdminController : Controller
     {
         private readonly IWebHostEnvironment _hostEnviroment;
+        private readonly UserManager<IdentityUser> _userManager;
         private readonly IUnitOfWork _unitOfWork;
 
-        public AdminController(IWebHostEnvironment hostEnviroment, IUnitOfWork unitOfWork)
+        public AdminController(IWebHostEnvironment hostEnviroment, IUnitOfWork unitOfWork, UserManager<IdentityUser> userManager)
         {
             _hostEnviroment = hostEnviroment;
             _unitOfWork = unitOfWork;
+            _userManager = userManager;
         }
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             ViewData["CatFamiliesCatalog"] = _unitOfWork.CatFamily.GetAllAsNoTracking().ToList();
+            var userId = _userManager.GetUserId(User);
+            var cart = _unitOfWork.Cart.GetFirstOrDefault(u => u.ApplicationUserId == userId, includeProperties: "CartItems");
+            ViewData["UserCartCount"] = cart.TotalItems;
             base.OnActionExecuting(context);
         }
         public IActionResult Index()
@@ -103,6 +108,12 @@ namespace KotikiShop.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DeleteCatFamilyPOST(int? id)
         {
+            if (_unitOfWork.Cat.GetFirstOrDefault(u => u.CatFamilyId == id) != null)
+            {
+                TempData["failure"] = "Cat Family cannot be deleted!";
+                return RedirectToAction("ManageCatFamilies");
+            }
+
             var obj = _unitOfWork.CatFamily.GetFirstOrDefault(u => u.Id == id);
             if (obj == null)
             {

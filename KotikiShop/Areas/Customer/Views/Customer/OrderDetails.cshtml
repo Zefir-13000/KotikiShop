@@ -1,45 +1,134 @@
-﻿@model KotikiShop.Models.Cat
+﻿@model KotikiShop.Models.ViewModels.CatCommentVM
 
 @{
     ViewData["Title"] = "Order Details";
+    
 }
+
+<style>
+    .content-section {
+        display: none;
+    }
+
+    .content-section.active {
+        display: block;
+    }
+
+    .btn.active {
+        background-color: #0d6efd;
+        color: white;
+    }
+</style>
 
 <div class="container mt-4">
     <div class="row">
-        <div class="">
-            <button type="button" class="btn">Все про кота</button>
-            <button type="button" class="btn">Детальніше</button>
-            <button type="button" class="btn">Питання</button>
-        </div
+        <div class="mb-2">
+            <button type="button" class="btn tab-btn active shadow-none" data-section="all">Все про товар</button>
+            <button type="button" class="btn tab-btn shadow-none" data-section="details">Детальніше</button>
+            <button type="button" class="btn tab-btn shadow-none" data-section="questions">Питання</button>
+        </div>
 
-        <div>
-            <div class="col-md-4">
-                <img src="@Model.ImageUrl" alt="@Model.Name" class="img-fluid rounded shadow">
+        <div class="content-section active" id="all">
+            <div class="row">
+                <div class="col-md-4">
+                    <img src="@Model.cat.ImageUrl" alt="@Model.cat.Name" class="img-fluid rounded shadow">
+                </div>
+
+                <div class="col-md-6">
+                    <h2>@Model.cat.Name</h2>
+                    <p>@Model.cat.Description</p>
+
+                    <div class="d-flex justify-content-between">
+                        <div class="d-flex flex-column">
+                            <span class="text-success fs-6">Є в наявності</span>
+                            <div class="d-flex align-items-baseline text-danger">
+                                <b class="fs-2">@Model.cat.Price</b>
+                                <b class="fs-6 ms-1">ETH</b>
+                            </div>
+                        </div>
+
+                        <div class="d-flex align-items-end justify-content-between gap-2 m-2">
+                            <form asp-area="Customer" asp-controller="Customer" asp-action="AddToCart" asp-route-catId="@Model.cat.Id" method="post">
+                                <button type="submit" class="btn btn-primary shadow-none">
+                                    <i class="bi bi-cart"></i> Додати до кошика
+                                </button>
+                            </form>
+
+                            <button type="button" class="btn btn-danger shadow-none">
+                                <i class="bi bi-heart text-danger"> 0</i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <span>Доставка кур'єром KotikiShop</span><br>
+                        <span>Самовивіз з відділень поштових операторів</span><br>
+                    </div>
+                </div>
+
+                <b>Також вас можуть зацікавити</b>
             </div>
+        </div>
 
-            <div class="col-md-6">
-                <h2>@Model.Name</h2>
-                <p>@Model.Description</p>
+        <div class="content-section" id="details">
+            <div class="row">
+                <div class="col-12">
+                    <h3>Детальна інформація</h3>
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <strong>Опис:</strong> @Model.cat.Description
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Дата народження:</strong> @Model.cat.Birthday
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Стать:</strong> @(Model.cat.Gender == KotikiShop.Models.CatGender.MALE ? "Чоловіча" : "Жіноча")
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Порода:</strong> @(Model.cat.CatFamily != null ? Model.cat.CatFamily.Name : "Невідомо")
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
 
-                <h3 class="text-danger">@Model.Price ETH</h3>
+        <div class="content-section" id="questions">
+            <div class="row">
+                <div class="col-12">
+                    <h3>Питання та відповіді</h3>
+                    <div>
+                        @foreach (var obj in Model.catComments) {
+                           
+                        }
 
-                <ul class="list-group">
-                    <li class="list-group-item"><strong>Дата народження:</strong> @Model.Birthday</li>
-                    <li class="list-group-item">
-                        <strong>Стать:</strong> @(Model.Gender == KotikiShop.Models.CatGender.MALE ? "Чоловіча" : "Жіноча")
-                    </li>
-                    <li class="list-group-item">
-                        <strong>Порода:</strong> @(Model.CatFamily != null ? Model.CatFamily.Name : "Невідомо")
-                    </li>
-                    <li class="list-group-item">
-                        <strong>Ціна:</strong> <span class="fw-bold">@Model.Price ETH</span>
-                    </li>
-                </ul>
-
-                <a href="#" class="btn btn-primary mt-3 w-100">
-                    <i class="bi bi-cart"></i> Додати до кошика
-                </a>
+                    </div>
+                    <div class="mt-3">
+                        <p>У вас є питання щодо товару? Задайте їх тут.</p>
+                        <textarea class="form-control" rows="3" placeholder="Введіть ваше питання"></textarea>
+                        
+                        <form asp-action="AddComment" method="post">
+                            <button type="submit" class="btn btn-primary mt-2">Надіслати питання</button>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    const tabButtons = document.querySelectorAll('.tab-btn');
+    const contentSections = document.querySelectorAll('.content-section');
+
+    document.addEventListener('DOMContentLoaded', function() {
+        tabButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                tabButtons.forEach(buttons => buttons.classList.remove('active'));
+                this.classList.add('active');
+
+                contentSections.forEach(sections => sections.classList.remove('active'));
+                document.getElementById(this.getAttribute('data-section')).classList.add('active');
+            })
+        })
+    });
+</script>

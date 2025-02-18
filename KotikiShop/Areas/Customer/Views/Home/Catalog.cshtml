@@ -1,34 +1,42 @@
 ﻿@model IEnumerable<KotikiShop.Models.Cat>
 @{
-    ViewData["Title"] = "Catalog";
+    ViewData["Title"] = "Каталог";
     var family = Context.Request.Query["family"];
     var age = Context.Request.Query["age"];
-    var price = Context.Request.Query["price"];
+    var price = int.TryParse(Context.Request.Query["price"], out int result) ? result : 0; ;
     var gender = Context.Request.Query["gender"];
     var viewModel = ViewBag.CatFamiliesCatalog as List<CatFamily>;
+    var search = Context.Request.Query["search"];
 }
 
 <h1 style="text-align: center;" class="pt-3">@ViewData["Title"]</h1>
+@if (!Model.Any())
+{
+    <div class="alert alert-warning text-center mt-4">
+        <strong>Нічого не знайдено!</strong> Спробуйте змінити запит або вибрати інші фільтри.
+    </div>
+}
 <form method="get" class="mb-4">
     <div class="row">
-        <!-- Фильтр по возрасту -->
+        
         <div class="col-md-3">
             <label for="age" class="form-label">Вік</label>
             <select id="age" name="age" class="form-select">
                 <option value="">Будь-який</option>
-                <option value="1" selected="@(age == "1")">1 рік</option>
-                <option value="2" selected="@(age == "2")">2 роки</option>
-                <option value="3" selected="@(age == "3")">3 роки</option>
-                <option value="4" selected="@(age == "4")">4 роки</option>
-                <option value="5" selected="@(age == "5")">5 років і більше</option>
+                <option value="1" selected="@(age == "1")">Менше 1 року</option>
+                <option value="2" selected="@(age == "2")">1 рік</option>
+                <option value="3" selected="@(age == "3")">2 роки</option>
+                <option value="4" selected="@(age == "4")">3 роки</option>
+                <option value="5" selected="@(age == "6")">4 роки</option>
+                <option value="6" selected="@(age == "7")">5 років і більше</option>
             </select>
         </div>
 
-        <!-- Фильтр по породе -->
+        
         <div class="col-md-3">
             <label for="family" class="form-label">Порода</label>
             <select id="family" name="family" class="form-select">
-                <option value="">Будь-яка</option> <!-- Default "All" option -->
+                <option value="">Будь-яка</option>
                 @if (viewModel != null)
                 { 
                     @foreach (var item in viewModel)
@@ -39,7 +47,7 @@
             </select>
         </div>
 
-        <!-- Фильтр по цене -->
+        
         <div class="col-md-3">
             <label for="price" class="form-label">Ціна</label>
             <input type="range" id="price" name="price" min="0" max="100" value="@price" class="form-range" oninput="updatePriceValue(this)" />
@@ -53,7 +61,7 @@
             </div>
         </div>
 
-        <!-- Фильтр по полу -->
+        
         <div class="col-md-3">
             <label for="gender" class="form-label">Стать</label>
             <select id="gender" name="gender" class="form-select">
@@ -100,7 +108,7 @@
 </div>
 
 <script>
-    // Функция обновления значения ползунка
+    
     function updatePriceValue(slider) {
         var priceValue = document.getElementById('price-value');
         priceValue.textContent = slider.value;

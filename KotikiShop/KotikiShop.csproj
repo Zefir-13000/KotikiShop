@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <None Remove="Areas\Admin\Views\Admin\NewFile.txt" />
+    <None Remove="Areas\Customer\Controllers\NewFile.txt" />
   </ItemGroup>
 
   <ItemGroup>

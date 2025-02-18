@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<KotikiShop.Models.CatFamily>
 @{
     ViewData["Title"] = "Manage Cat Families";
+	var failureText = TempData["failure"] as string;
 }
 
 <h1 style="text-align: center;" class="pt-3">@ViewData["Title"]</h1>
-
 <div class="container">
     <div class="row pt-4">
         <div class="col-6">
@@ -19,6 +19,13 @@
     </div>
     <br />
 </div>
+
+@if (failureText != null)
+{
+    <div class="alert alert-warning text-center mt-4">
+        <strong>Неможливо видалити породу!</strong> До цієї породи притаманний принаймні один кіт.
+    </div>
+}
 
 <table class="table table-bordered table-striped" style="width:100%">
     <thead>
