@@ -28,7 +28,10 @@
 </h1>
 Cat - має такі характеристики: ім'я, опис, вік, порода, ціна, стать<br>
 CatFamily - порода<br>
-Application User - користувач
+Application User - користувач<br>
+CatComment - не дороблено<br>
+Cart - кошик покупок<br>
+CartItem - об'єкт в кошику
 <h1 align="center">
   Можливості застосунку
 </h1>
