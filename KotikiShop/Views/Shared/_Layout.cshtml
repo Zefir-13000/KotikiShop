@@ -1,4 +1,5 @@
 ﻿@using KotikiShop.Utility
+@using KotikiShop.Models
 @{
     var viewModel = ViewBag.CatFamiliesCatalog as List<CatFamily>;
     var cartCount = ViewBag.UserCartCount as int?;
@@ -61,7 +62,7 @@
                     @if (User.IsInRole(SD.Role_User_Customer) || User.IsInRole(SD.Role_User_Admin))
                     {
                         <!-- CART -->
-                        <button class="btn btn-dark border-0 me-3 shadow-none position-relative" type="button">
+                        <button class="btn btn-dark border-0 me-1 shadow-none position-relative" type="button">
                             <a class="nav-link" asp-area="Customer" asp-controller="Customer" asp-action="Cart">
                                 <i class="bi bi-cart4 fs-4"></i>
                             </a>

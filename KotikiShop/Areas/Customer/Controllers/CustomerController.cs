@@ -27,24 +27,24 @@ namespace KotikiShop.Areas.Customer.Controllers
             ViewData["CatFamiliesCatalog"] = _unitOfWork.CatFamily.GetAllAsNoTracking().ToList();
             var userId = _userManager.GetUserId(User);
             var cart = _unitOfWork.Cart.GetFirstOrDefault(u => u.ApplicationUserId == userId, includeProperties: "CartItems");
-            ViewData["UserCartCount"] = cart.TotalItems;
+            if (cart != null)
+                ViewData["UserCartCount"] = cart.TotalItems;
             base.OnActionExecuting(context);
         }
 
         [HttpPost]
-        public IActionResult AddComment(int catId, string message)
+        public IActionResult AddComment(CatComment catComment)
         {
-            var userId = _userManager.GetUserId(User);
-
-            CatComment comment = new()
+            if (string.IsNullOrEmpty(catComment.Message))
             {
-                Message = message,
-                CatId = catId,
-                UserId = userId
-            };
-            _unitOfWork.CatComment.Add(comment);
+                TempData["failure"] = "The message was empty!";
+                return RedirectToAction("OrderDetails", "Customer", new { area = "Customer", id = catComment.CatId });
+            }
+            var userId = _userManager.GetUserId(User);
+            catComment.UserId = userId;
+            _unitOfWork.CatComment.Add(catComment);
             _unitOfWork.Save();
-            return RedirectToAction("OrderDetails", "Customer", new { area = "Customer", id = catId });
+            return RedirectToAction("OrderDetails", "Customer", new { area = "Customer", id = catComment.CatId });
         }
 
         [HttpPost]
@@ -135,7 +135,7 @@ namespace KotikiShop.Areas.Customer.Controllers
                 return NotFound();
             }
 
-            var comments = _unitOfWork.CatComment.GetAll().ToList();
+            var comments = _unitOfWork.CatComment.GetAll(u => u.CatId == cat.Id, includeProperties: "User").ToList();
             CatCommentVM catCommentVM = new()
             {
                 catComments = comments,
@@ -161,6 +161,17 @@ namespace KotikiShop.Areas.Customer.Controllers
                 _unitOfWork.Cart.Add(cart);
             }
             _unitOfWork.Save();
+            return View(cart);
+        }
+
+        public IActionResult Payment()
+        {
+            var userId = _userManager.GetUserId(User);
+            var cart = _unitOfWork.Cart.GetFirstOrDefault(u => u.ApplicationUserId == userId, includeProperties: "CartItems,CartItems.Product");
+            if (cart == null)
+            {
+                return NotFound("Cart not found.");
+            }
             return View(cart);
         }
     }

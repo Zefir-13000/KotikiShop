@@ -25,7 +25,8 @@ namespace KotikiShop.Areas.Customer.Controllers
             ViewData["CatFamiliesCatalog"] = _unitOfWork.CatFamily.GetAllAsNoTracking().ToList();
             var userId = _userManager.GetUserId(User);
             var cart = _unitOfWork.Cart.GetFirstOrDefault(u => u.ApplicationUserId == userId, includeProperties: "CartItems");
-            ViewData["UserCartCount"] = cart.TotalItems;
+            if (cart != null)
+                ViewData["UserCartCount"] = cart.TotalItems;
             base.OnActionExecuting(context);
         }
         public IActionResult Index()

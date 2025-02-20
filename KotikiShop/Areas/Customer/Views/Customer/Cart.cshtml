@@ -7,50 +7,48 @@
 
 @if (Model.CartItems.Count == 0)
 {
-        <div class="alert alert-warning text-center mt-4">
-            <strong>Ваша корзина пуста!</strong> Додайте котиків, щоб оформити замовлення.
-        </div>
+    <div class="alert alert-warning text-center mt-4">
+        <strong>Ваша корзина пуста!</strong> Додайте котиків, щоб оформити замовлення.
+    </div>
 }
 else
 {
-        <div class="table-responsive">
-            <table class="table table-bordered mt-4">
-                <thead class="table-dark">
-                    <tr>
-                        <th>Фото</th>
-                        <th>Ім'я</th>
-                        <th>Порода</th>
-                        <th>Ціна</th>
-                        <th>Дія</th>
-                    </tr>
-                </thead>
-                <tbody>
-                @foreach (var item in Model.CartItems)
-                {
-                            <tr>
-                                <td>
-                                    <img src="@item.Product.ImageUrl" alt="cat-image" width="80" height="80" class="rounded">
-                                </td>
-                                <td>@item.Product.Name</td>
-                                <td>@item.Product.CatFamily.Name</td>
-                                <td>@item.Product.Price ETH</td>
-                                <td>
-                                    <form asp-area="Customer" asp-controller="Customer" asp-action="RemoveFromCart" asp-route-cartItemId="@item.Id" method="post">
-                                        <button type="submit" class="btn btn-danger btn-sm">
-                                            <i class="bi bi-trash"></i> Видалити
-                                        </button>
-                                    </form>
-                                </td>
-                            </tr>
-                }
-                </tbody>
-            </table>
+    <div class="container">
+        <div class="row border rounded-top-4 bg-dark text-white py-3 d-none d-md-flex">
+            <div class="col-md-2">Фото</div>
+            <div class="col-md-2">Ім'я</div>
+            <div class="col-md-2">Порода</div>
+            <div class="col-md-2">Ціна</div>
+            <div class="col-md-2">Дія</div>
         </div>
 
-        <div class="d-flex justify-content-between align-items-center mt-4">
-            <h4>Загальна вартість: <strong>@Model.TotalPrice ETH</strong></h4>
-            <a asp-action="Checkout" class="btn btn-success btn-lg">
-                <i class="bi bi-bag-check"></i> Оформити замовлення
-            </a>
-        </div>
+        @foreach (var item in Model.CartItems)
+        {
+            <div class="row align-items-center py-2 border">
+                <div class="col-md-2 d-flex align-items-center">
+                    <strong>@item.Quantity</strong>
+                    <strong class="me-4">x</strong>
+                    <img src="@item.Product.ImageUrl" alt="cat-image" width="80" height="80" class="rounded">
+                </div>
+
+                <div class="col-md-2">@item.Product.Name</div>
+                <div class="col-md-2">@item.Product.CatFamily.Name</div>
+                <div class="col-md-2">@item.Product.Price ETH</div>
+                <div class="col-md-2">
+                    <form asp-area="Customer" asp-controller="Customer" asp-action="RemoveFromCart" asp-route-cartItemId="@item.Id" method="post">
+                        <button type="submit" class="btn btn-danger btn-sm">
+                            <i class="bi bi-trash"></i> Видалити
+                        </button>
+                    </form>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mt-4">
+        <h4>Загальна вартість: <strong>@Model.TotalPrice ETH</strong></h4>
+        <a asp-action="Payment" class="btn btn-success btn-lg">
+            <i class="bi bi-bag-check"></i> Оформити замовлення
+        </a>
+    </div>
 }

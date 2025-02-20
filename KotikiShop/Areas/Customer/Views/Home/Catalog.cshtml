@@ -1,4 +1,5 @@
-﻿@model IEnumerable<KotikiShop.Models.Cat>
+﻿@using KotikiShop.Models;
+@model IEnumerable<KotikiShop.Models.Cat>
 @{
     ViewData["Title"] = "Каталог";
     var family = Context.Request.Query["family"];

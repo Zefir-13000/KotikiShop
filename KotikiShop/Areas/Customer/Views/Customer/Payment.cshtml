@@ -1,5 +1,117 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model KotikiShop.Models.Cart
+
 @{
+    ViewData["Title"] = "Payment";
 }
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8">
+            <h4 class="mb-3">Замовлення</h4>
+
+            <div class="container d-inline-flex gap-3">
+                @foreach (var item in Model.CartItems)
+                {
+                    <div class="col-sm-3">
+                        <div class="card p-3">
+                            <div class="card-body d-flex align-items-center">
+                                <img src="@item.Product.ImageUrl" alt="Товар" class="img-fluid me-3" style="width: 120px;">
+                            </div>
+                            @{
+                                var Calculated = item.Product.Price * item.Quantity;
+                            }
+                            <div>
+                                <h5 class="card-title">@item.Product.Name</h5>
+                                <p class="text-muted"></p>
+                                <strong>Кількість: </strong><strong>@item.Quantity</strong><br>
+                                <strong>Ціна: </strong><strong>@Calculated</strong><strong> ETH</strong>     
+                            </div>
+                        </div>
+                    </div>
+                
+                }
+            </div>
+
+            <h4 class="mb-3">Доставка</h4>
+            <div class="card mb-3">
+                <div class="card-body">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="delivery" id="courier">
+                        <label class="form-check-label" for="courier">
+                            Анонімним кур'єром (150 ₴)
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="delivery">
+                        <label class="form-check-label" for="novaPost">
+                            По координатам (150 ₴)
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="delivery">
+                        <label class="form-check-label" for="novaPost">
+                            Віртуально (150 ₴)
+                        </label>
+                    </div>
+                    
+                </div>
+            </div>
+
+            <h4 class="mb-3">Оплата</h4>
+            <div class="card mb-3">
+                <div class="card-body">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="payment" id="payOnReceive" checked>
+                        <label class="form-check-label" for="payOnReceive">
+                            Оплата при отриманні
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="payment" id="onlinePay">
+                        <label class="form-check-label" for="onlinePay">
+                            Оплатити зараз
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="payment" id="credit">
+                        <label class="form-check-label" for="credit">
+                            Кредит від банку
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <h4 class="mb-3">Отримувач</h4>
+            <div class="card mb-3">
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Ім'я</label>
+                        <input type="text" class="form-control" id="name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="phone" class="form-label">Мобільний номер</label>
+                        <input type="text" class="form-control" id="phone" placeholder="+38">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <h4 class="mb-3">Оплата</h4>
+            <div class="card">
+                <div class="card-body">
+                    <strong>ПОРНО МИРЫ И МАКСИМА СМОТРЕТЬ ОНЛАЙН БЕЗ СМС И РЕГИСТРАЦИИ</strong>
+                </div>
+            </div>
+            <h4 class="mb-3">Підсумок</h4>
+            <div class="card">
+                <div class="card-body">
+                    <!--<p><strong>@Model.TotalItems товар(-ів) на суму: </strong></p>-->
+                    <p><strong>Доставка:</strong> за тарифами перевізника</p>
+                    <h5><strong>До сплати: @Model.TotalPrice</strong></h5>
+                    <button class="btn btn-success w-100 mt-3">Підтвердити замовлення</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

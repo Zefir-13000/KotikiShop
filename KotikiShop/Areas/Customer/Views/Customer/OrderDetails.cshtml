@@ -2,7 +2,6 @@
 
 @{
     ViewData["Title"] = "Order Details";
-    
 }
 
 <style>
@@ -23,9 +22,9 @@
 <div class="container mt-4">
     <div class="row">
         <div class="mb-2">
-            <button type="button" class="btn tab-btn active shadow-none" data-section="all">Все про товар</button>
-            <button type="button" class="btn tab-btn shadow-none" data-section="details">Детальніше</button>
-            <button type="button" class="btn tab-btn shadow-none" data-section="questions">Питання</button>
+            <button type="button" name="activeSection" id="activeSection" class="btn tab-btn active shadow-none" data-section="all">Все про товар</button>
+            <button type="button" name="activeSection" id="activeSection" class="btn tab-btn shadow-none" data-section="details">Детальніше</button>
+            <button type="button" name="activeSection" id="activeSection" class="btn tab-btn shadow-none" data-section="questions">Питання</button>
         </div>
 
         <div class="content-section active" id="all">
@@ -98,15 +97,32 @@
                     <h3>Питання та відповіді</h3>
                     <div>
                         @foreach (var obj in Model.catComments) {
-                           
+                            <div class="card mb-3 border-0 shadow-sm">
+                                    <div class="card-body rounded-4 position-relative" style="background-color: #292d31;">
+                                    <div class="d-flex gap-3">
+                                        <div class="flex-shrink-0">
+                                            <img class="img-fluid rounded-circle" src="~/images/no_picture.png" alt="User avatar" style="width: 48px; height: 48px; object-fit: cover;">
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <h6 class="mb-1 fw-bold">@obj.User.Name</h6>
+                                            <p class="mb-1 text-secondary">@obj.Message</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="position-absolute bottom-0 end-0 p-2 px-3">
+                                        <button class="btn shadow-none p-1 py-0">Відповісти</button>
+                                        <button class="btn shadow-none p-1 py-0">Цитата</button>
+                                    </div>
+                                </div>
+                            </div>
                         }
 
                     </div>
                     <div class="mt-3">
                         <p>У вас є питання щодо товару? Задайте їх тут.</p>
-                        <textarea class="form-control" rows="3" placeholder="Введіть ваше питання"></textarea>
-                        
-                        <form asp-action="AddComment" method="post">
+                        <form asp-area="Customer" asp-controller="Customer" asp-action="AddComment" method="post">
+                            <input type="hidden" name="CatId" value="@Model.cat?.Id" />
+                            <textarea name="Message" class="form-control" rows="3" placeholder="Введіть ваше питання"></textarea>
                             <button type="submit" class="btn btn-primary mt-2">Надіслати питання</button>
                         </form>
                     </div>

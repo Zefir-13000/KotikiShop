@@ -141,6 +141,7 @@ html {
     transform: translateY(80%);
     transition: transform 0.35s ease-out;
     cursor: pointer;
+    pointer-events: auto;
     user-drag: none;
     user-select: none;
     -moz-user-select: none;
