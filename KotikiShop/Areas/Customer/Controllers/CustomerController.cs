@@ -90,7 +90,21 @@ namespace KotikiShop.Areas.Customer.Controllers
         [HttpPost]
         public IActionResult UserLike(int catId)
         {
-            return StatusCode(200);
+            var userId = _userManager.GetUserId(User);
+
+            var userLike = _unitOfWork.CatLikes.GetFirstOrDefault(u => u.UserId == userId && u.CatId == catId);
+            if (userLike == null)
+            {
+                CatLike catLike = new()
+                {
+                    CatId = catId,
+                    UserId = userId
+                };
+                _unitOfWork.CatLikes.Add(catLike);
+                _unitOfWork.Save();
+                return StatusCode(200);
+            }
+            return StatusCode(208);
         }
 
 
@@ -142,10 +156,12 @@ namespace KotikiShop.Areas.Customer.Controllers
             }
 
             var comments = _unitOfWork.CatComment.GetAll(u => u.CatId == cat.Id, includeProperties: "User").ToList();
+            var totalLikes = _unitOfWork.CatLikes.GetAll(u => u.CatId == cat.Id).Count();
             CatCommentVM catCommentVM = new()
             {
                 catComments = comments,
-                cat = cat
+                cat = cat,
+                TotalLikes = totalLikes
             };
 
             return View(catCommentVM);

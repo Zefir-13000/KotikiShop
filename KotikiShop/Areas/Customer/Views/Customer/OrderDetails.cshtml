@@ -53,8 +53,8 @@
                                 </button>
                             </form>
 
-                            <button type="button" class="btn btn-danger shadow-none">
-                                <i class="bi bi-heart text-danger"> 0</i>
+                            <button type="button" class="btn btn-danger shadow-none like-button" data-catid="@Model.cat.Id">
+                                <i class="bi bi-heart text-danger"> @Model.TotalLikes</i>
                             </button>
                         </div>
                     </div>
@@ -145,6 +145,30 @@
                 contentSections.forEach(sections => sections.classList.remove('active'));
                 document.getElementById(this.getAttribute('data-section')).classList.add('active');
             })
-        })
+        });
+
+        $(".like-button").click(function () {
+            var catId = $(this).data("catid");
+            var obj = $(this).children(":first");
+            var totalLikes = parseInt(obj.text());
+            console.log(totalLikes);
+            $.ajax({
+                type: "POST",
+                url: "/Customer/Customer/UserLike",
+                data: { catId: catId },
+                statusCode: {
+                    200: function() {
+                        obj.html(" " + (totalLikes + 1).toString());
+                        //alert("Liked successfully!");
+                    },
+                    208:function(){
+                        alert("Already liked!");
+                    }
+                },
+                error: function () {
+                    alert("An error occurred.");
+                }
+            });
+        });
     });
 </script>

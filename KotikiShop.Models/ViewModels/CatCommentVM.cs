@@ -10,5 +10,6 @@ namespace KotikiShop.Models.ViewModels
     {
         public IEnumerable<CatComment>? catComments = new List<CatComment>();
         public Cat? cat {  get; set; }
+        public int? TotalLikes { get; set; }
     }
 }
