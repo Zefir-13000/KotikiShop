@@ -18,6 +18,7 @@ namespace KotikiShop.DataAccess.Repository
             Cat = new CatRepository(_db);
             CatFamily = new CatFamilyRepository(_db);
             CatComment = new CatCommentRepository(_db);
+            CatLikes = new CatLikesRepository(_db);
             Cart = new CartRepository(_db);
             CartItem = new CartItemRepository(_db);
         }
@@ -26,6 +27,7 @@ namespace KotikiShop.DataAccess.Repository
         public ICatRepository Cat { get; }
         public ICatFamilyRepository CatFamily { get; }
         public ICatCommentRepository CatComment { get; }
+        public ICatLikesRepository CatLikes { get; }
         public ICartRepository Cart { get; }
         public ICartItemRepository CartItem { get; }
         public void Save()

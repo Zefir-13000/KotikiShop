@@ -11,6 +11,7 @@ namespace KotikiShop.DataAccess.Repository.IRepository
         ICatRepository Cat { get; }
         ICatFamilyRepository CatFamily { get; }
         ICatCommentRepository CatComment { get; }
+        ICatLikesRepository CatLikes { get; }
         IApplicationUserRepository ApplicationUser { get; }
         ICartRepository Cart { get; }
         ICartItemRepository CartItem { get; }

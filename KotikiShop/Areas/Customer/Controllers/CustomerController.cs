@@ -87,6 +87,12 @@ namespace KotikiShop.Areas.Customer.Controllers
             return RedirectToAction("Cart");
         }
 
+        [HttpPost]
+        public IActionResult UserLike(int catId)
+        {
+            return StatusCode(200);
+        }
+
 
         [HttpPost]
         public IActionResult RemoveFromCart(int cartItemId)

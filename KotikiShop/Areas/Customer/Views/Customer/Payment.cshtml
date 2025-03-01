@@ -100,7 +100,7 @@
             <h4 class="mb-3">Оплата</h4>
             <div class="card">
                 <div class="card-body">
-                    <strong>ПОРНО МИРЫ И МАКСИМА СМОТРЕТЬ ОНЛАЙН БЕЗ СМС И РЕГИСТРАЦИИ</strong>
+                    <strong>Оплата</strong>
                 </div>
             </div>
             <h4 class="mb-3">Підсумок</h4>
@@ -109,9 +109,24 @@
                     <!--<p><strong>@Model.TotalItems товар(-ів) на суму: </strong></p>-->
                     <p><strong>Доставка:</strong> за тарифами перевізника</p>
                     <h5><strong>До сплати: @Model.TotalPrice</strong></h5>
-                    <button class="btn btn-success w-100 mt-3">Підтвердити замовлення</button>
+                    <button class="btn btn-success w-100 mt-3" data-bs-toggle="modal" data-bs-target="#paymentWindow">Підтвердити замовлення</button>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="paymentWindow" tabindex="-1" aria-labelledby="payment" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                Оплата
+            </div>
+            <div class="modal-body d-flex">
+                <button class="btn btn-success flex-fill" id="connect-metamask">CUMMECT ME</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/js/payment.js" defer></script>
