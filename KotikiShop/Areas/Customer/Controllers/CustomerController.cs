@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.CodeAnalysis;
 using System.Security.Claims;
+using Nethereum.Web3;
+using Org.BouncyCastle.Asn1.X509;
 
 namespace KotikiShop.Areas.Customer.Controllers
 {
@@ -184,6 +186,59 @@ namespace KotikiShop.Areas.Customer.Controllers
             }
             _unitOfWork.Save();
             return View(cart);
+        }
+
+        [HttpGet]
+        [Route("api/cart/sum")]
+        public IActionResult PaymentSum()
+        {
+            var userId = _userManager.GetUserId(User);
+            var cart = _unitOfWork.Cart.GetFirstOrDefault(u => u.ApplicationUserId == userId, includeProperties: "CartItems,CartItems.Product");
+            if (cart == null)
+            {
+                return NotFound("Cart not found.");
+            }
+
+            return Ok(new { Total = cart.TotalPrice });
+        }
+
+        [HttpPost]
+        [Route("api/cart/submit")]
+        public async Task<IActionResult> SubmitOrder([FromForm] string txHash)
+        {
+            var web3 = new Web3($"https://eth-sepolia.public.blastapi.io");
+
+            try
+            {
+                // Get transaction receipt
+                var receipt = await web3.Eth.Transactions.GetTransactionReceipt.SendRequestAsync(txHash);
+
+                if (receipt == null)
+                {
+                    return BadRequest("Transaction receipt not found. Try again later.");
+                }
+
+                if (receipt.Status.Value == 1) // Status 1 means success
+                {
+                    var userId = _userManager.GetUserId(User);
+                    var cart = _unitOfWork.Cart.GetFirstOrDefault(u => u.ApplicationUserId == userId, includeProperties: "CartItems,CartItems.Product,CartItems.Product.CatFamily");
+
+                    foreach (var item in cart.CartItems) {
+                        _unitOfWork.CartItem.Remove(item);
+                    };
+                    _unitOfWork.Save();
+
+                    return Ok(new { message = "Transaction successful", txHash });
+                }
+                else
+                {
+                    return BadRequest(new { message = "Transaction failed", txHash });
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Error checking transaction", error = ex.Message });
+            }
         }
 
         public IActionResult Payment()

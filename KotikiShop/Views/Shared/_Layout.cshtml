@@ -61,6 +61,14 @@
                 <div class="d-inline-flex align-items-center">
                     @if (User.IsInRole(SD.Role_User_Customer) || User.IsInRole(SD.Role_User_Admin))
                     {
+                         @if (User.IsInRole(SD.Role_User_Admin))
+                        {
+                            <a class="nav-link" asp-area="Admin" asp-controller="Admin" asp-action="Index">
+                                <i class="bi bi-key fs-4"></i>
+                            </a>
+                        }
+                        <hr>
+
                         <!-- CART -->
                         <button class="btn btn-dark border-0 me-1 shadow-none position-relative" type="button">
                             <a class="nav-link" asp-area="Customer" asp-controller="Customer" asp-action="Cart">
@@ -85,10 +93,7 @@
                             </div>
                         </div>
 
-                        @if (User.IsInRole(SD.Role_User_Admin))
-                        {
-                            <a class="nav-link" asp-area="Admin" asp-controller="Admin" asp-action="Index">Admin panel</a>
-                        }
+                       
                     }
                     else
                     {

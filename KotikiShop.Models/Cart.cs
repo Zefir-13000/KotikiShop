@@ -19,7 +19,7 @@ namespace KotikiShop.Models
         [InverseProperty("Cart")]
         [ValidateNever]
         public virtual ICollection<CartItem> CartItems { get; set; } // Navigation property for related CartItems
-        public float TotalPrice => CartItems.Sum(item => item.Quantity * item.UnitPrice);
+        public float TotalPrice => (float)CartItems.Sum(item => item.Quantity * item.Product.Price);
         public int TotalItems => CartItems.Sum(item => item.Quantity);
         public Cart()
         {

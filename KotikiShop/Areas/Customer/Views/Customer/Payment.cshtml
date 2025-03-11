@@ -38,46 +38,22 @@
                     <div class="form-check">
                         <input class="form-check-input" type="radio" name="delivery" id="courier">
                         <label class="form-check-label" for="courier">
-                            Анонімним кур'єром (150 ₴)
+                            Анонімним кур'єром (0.005 ETH)
                         </label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="delivery">
-                        <label class="form-check-label" for="novaPost">
-                            По координатам (150 ₴)
+                        <input class="form-check-input" type="radio" name="delivery" id="coordinates">
+                        <label class="form-check-label" for="coordinates">
+                            По координатам (0.001 ETH)
                         </label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="delivery">
-                        <label class="form-check-label" for="novaPost">
-                            Віртуально (150 ₴)
+                        <input class="form-check-input" type="radio" name="delivery" id="virtual" checked>
+                        <label class="form-check-label" for="virtual">
+                            Віртуально (Безкоштовно)
                         </label>
                     </div>
                     
-                </div>
-            </div>
-
-            <h4 class="mb-3">Оплата</h4>
-            <div class="card mb-3">
-                <div class="card-body">
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="payment" id="payOnReceive" checked>
-                        <label class="form-check-label" for="payOnReceive">
-                            Оплата при отриманні
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="payment" id="onlinePay">
-                        <label class="form-check-label" for="onlinePay">
-                            Оплатити зараз
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="payment" id="credit">
-                        <label class="form-check-label" for="credit">
-                            Кредит від банку
-                        </label>
-                    </div>
                 </div>
             </div>
 
@@ -108,7 +84,7 @@
                 <div class="card-body">
                     <!--<p><strong>@Model.TotalItems товар(-ів) на суму: </strong></p>-->
                     <p><strong>Доставка:</strong> за тарифами перевізника</p>
-                    <h5><strong>До сплати: @Model.TotalPrice</strong></h5>
+                    <h5><strong id="order-price">До сплати: @Model.TotalPrice ETH</strong></h5>
                     <button class="btn btn-success w-100 mt-3" data-bs-toggle="modal" data-bs-target="#paymentWindow">Підтвердити замовлення</button>
                 </div>
             </div>
@@ -122,8 +98,10 @@
             <div class="modal-header">
                 Оплата
             </div>
-            <div class="modal-body d-flex">
-                <button class="btn btn-success flex-fill" id="connect-metamask">CUMMECT ME</button>
+            <div class="modal-body d-flex flex-column">
+                <i class="mb-2" id="label-error" hidden>Помилка під'єднання до MetaMask</i>
+                <button class="btn btn-success flex-fill" id="connect-metamask">Connect Metamask</button>
+                <button class="btn btn-success mt-2" id="confirm-payment" hidden>Pay</button>
             </div>
         </div>
     </div>

@@ -10,6 +10,6 @@
     }
 }
 
-$("#inputFile").change(function () {
+document.getElementById("inputFile").addEventListener("change", function () {
     readURL(this);
 });
