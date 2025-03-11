@@ -4,6 +4,8 @@
     ViewData["Title"] = "Payment";
 }
 
+<link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
+
 <div class="container mt-4">
     <div class="row">
         <div class="col-md-8">
@@ -101,7 +103,12 @@
             <div class="modal-body d-flex flex-column">
                 <i class="mb-2" id="label-error" hidden>Помилка під'єднання до MetaMask</i>
                 <button class="btn btn-success flex-fill" id="connect-metamask">Connect Metamask</button>
-                <button class="btn btn-success mt-2" id="confirm-payment" hidden>Pay</button>
+
+                <button type="button" class="btn btn-success mt-2" id="confirm-payment" hidden>
+                    Pay
+                    <span class="loader"></span>
+                </button>
+                
             </div>
         </div>
     </div>

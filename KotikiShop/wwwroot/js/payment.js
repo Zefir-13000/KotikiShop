@@ -81,7 +81,7 @@ $(document).ready(function () {
                     break;
             }
         }
-
+       
         finalCost = totalCost + price;
         button_confirm.textContent = `Pay ${finalCost} ETH`;
         priceDisplay.textContent = `До сплати: ${finalCost} ETH`;
@@ -129,6 +129,12 @@ $("#confirm-payment").click(() => {
     };
 
     console.log(transactionParams);
+    let button_confirm = $("#confirm-payment")[0];
+    button_confirm.innerText = "";
+    const spanLoader = document.createElement("span");
+    spanLoader.classList.add("loader");
+    button_confirm.appendChild(spanLoader);
+
     ethereum.request({ method: "eth_sendTransaction", params: [transactionParams] })
         .then(txHash => {
             console.log("Transaction Hash:", txHash);
@@ -140,11 +146,14 @@ $("#confirm-payment").click(() => {
                         window.location.href = "/"; // Redirect to main page
                     })
                     .fail(error => {
+                        button_confirm.textContent = `Pay ${finalCost} ETH`;
                         alert("❌ Payment failed! " + (error.responseJSON?.message || "Please try again."));
                     });
             });
         })
-        .catch(error => {
+        .catch(error => { 
+            spanLoader.remove();
+            button_confirm.textContent = `Pay ${finalCost} ETH`;
             console.error("Transaction failed", error);
             alert("❌ Transaction rejected or failed!");
         });
