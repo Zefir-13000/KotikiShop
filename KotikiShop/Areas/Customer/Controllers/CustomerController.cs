@@ -9,6 +9,7 @@ using Microsoft.CodeAnalysis;
 using System.Security.Claims;
 using Nethereum.Web3;
 using Org.BouncyCastle.Asn1.X509;
+using KotikiShop.DataAccess.Repository;
 
 namespace KotikiShop.Areas.Customer.Controllers
 {
@@ -200,6 +201,50 @@ namespace KotikiShop.Areas.Customer.Controllers
             }
 
             return Ok(new { Total = cart.TotalPrice });
+        }
+
+        [HttpPost]
+        [Route("api/cart/saveReceipt")]
+        public IActionResult SaveReceiptOrder()
+        {
+            JsonDataStorage<Receipt> jsonDataStorage = new JsonDataStorage<Receipt>("Receipts.json");
+
+            var userId = _userManager.GetUserId(User);
+            var cart = _unitOfWork.Cart.GetFirstOrDefault(u => u.ApplicationUserId == userId, includeProperties: "CartItems,CartItems.Product,CartItems.Product.CatFamily");
+            if (cart == null)
+            {
+                return NotFound("Cart not found.");
+            }
+
+            // Get Cats
+            List<Cat> cats = new();
+            foreach (var item in cart.CartItems)
+            {
+                var cat = _unitOfWork.Cat.GetFirstOrDefault(u => u.Id == item.ProductId, includeProperties: "CatFamily");
+                cats.Add(cat);
+            }
+
+            // Get Last id in json
+            var receipts = jsonDataStorage.GetAll();
+            int lastId = 0;
+            if (receipts.Count() > 0)
+            {
+                lastId = receipts.Last().Id;
+            }
+
+            // Save receipt
+            Receipt receipt = new()
+            {
+                Id = lastId + 1,
+                UserId = userId,
+                Cats = cats,
+                TotalPrice = cart.TotalPrice,
+                Date = DateTime.Now
+            };
+
+            jsonDataStorage.Add(receipt);
+
+            return Ok(new { message = "Successful" });
         }
 
         [HttpPost]

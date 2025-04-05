@@ -121,6 +121,14 @@ $("#connect-metamask").click(() => {
     };
 });
 
+$("#saveReceipt").click(() => {
+    fetch("/api/cart/saveReceipt", {
+        method: "POST"
+    }).then(function (res) {
+        console.log("success");
+    });
+});
+
 $("#confirm-payment").click(() => {
     let transactionParams = {
         to: "0x11f079ED7e34c64B615BeA6414E25fA1C7534871",

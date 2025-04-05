@@ -1,0 +1,112 @@
+[
+  {
+    "Id": 1,
+    "UserId": "a02b9f46-fc1a-4c17-92f8-5801fd33a468",
+    "TotalPrice": 0.0005,
+    "Date": "2025-04-01T13:35:17.1108816+03:00",
+    "Cats": [
+      {
+        "Id": 1,
+        "Name": "DJ",
+        "Description": "\u0410\u0440\u0431\u0443\u0437",
+        "Price": 0.0005,
+        "Birthday": "2020-01-01",
+        "Gender": 1,
+        "ImageUrl": "\\images\\cats\\da6a8af8-e751-49b3-868a-327516f6e7b4.jpg",
+        "CatFamilyId": 1,
+        "CatFamily": {
+          "Id": 1,
+          "Name": "Test"
+        }
+      }
+    ]
+  },
+  {
+    "Id": 2,
+    "UserId": "a02b9f46-fc1a-4c17-92f8-5801fd33a468",
+    "TotalPrice": 0.0005,
+    "Date": "2025-04-01T13:35:34.0245024+03:00",
+    "Cats": [
+      {
+        "Id": 1,
+        "Name": "DJ",
+        "Description": "\u0410\u0440\u0431\u0443\u0437",
+        "Price": 0.0005,
+        "Birthday": "2020-01-01",
+        "Gender": 1,
+        "ImageUrl": "\\images\\cats\\da6a8af8-e751-49b3-868a-327516f6e7b4.jpg",
+        "CatFamilyId": 1,
+        "CatFamily": {
+          "Id": 1,
+          "Name": "Test"
+        }
+      }
+    ]
+  },
+  {
+    "Id": 3,
+    "UserId": "a02b9f46-fc1a-4c17-92f8-5801fd33a468",
+    "TotalPrice": 0.0005,
+    "Date": "2025-04-01T13:36:41.430022+03:00",
+    "Cats": [
+      {
+        "Id": 1,
+        "Name": "DJ",
+        "Description": "\u0410\u0440\u0431\u0443\u0437",
+        "Price": 0.0005,
+        "Birthday": "2020-01-01",
+        "Gender": 1,
+        "ImageUrl": "\\images\\cats\\da6a8af8-e751-49b3-868a-327516f6e7b4.jpg",
+        "CatFamilyId": 1,
+        "CatFamily": {
+          "Id": 1,
+          "Name": "Test"
+        }
+      }
+    ]
+  },
+  {
+    "Id": 4,
+    "UserId": "a02b9f46-fc1a-4c17-92f8-5801fd33a468",
+    "TotalPrice": 0.0005,
+    "Date": "2025-04-01T13:38:23.0407942+03:00",
+    "Cats": [
+      {
+        "Id": 1,
+        "Name": "DJ",
+        "Description": "\u0410\u0440\u0431\u0443\u0437",
+        "Price": 0.0005,
+        "Birthday": "2020-01-01",
+        "Gender": 1,
+        "ImageUrl": "\\images\\cats\\da6a8af8-e751-49b3-868a-327516f6e7b4.jpg",
+        "CatFamilyId": 1,
+        "CatFamily": {
+          "Id": 1,
+          "Name": "Test"
+        }
+      }
+    ]
+  },
+  {
+    "Id": 5,
+    "UserId": "a02b9f46-fc1a-4c17-92f8-5801fd33a468",
+    "TotalPrice": 0.0005,
+    "Date": "2025-04-01T13:39:49.5223882+03:00",
+    "Cats": [
+      {
+        "Id": 1,
+        "Name": "DJ",
+        "Description": "\u0410\u0440\u0431\u0443\u0437",
+        "Price": 0.0005,
+        "Birthday": "2020-01-01",
+        "Gender": 1,
+        "ImageUrl": "\\images\\cats\\da6a8af8-e751-49b3-868a-327516f6e7b4.jpg",
+        "CatFamilyId": 1,
+        "CatFamily": {
+          "Id": 1,
+          "Name": "Test"
+        }
+      }
+    ]
+  }
+]
