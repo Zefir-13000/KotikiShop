@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace KotikiShop.DataAccess.Repository
 {
-    class CatLikesRepository : Repository<CatLike>, ICatLikesRepository
+    public class CatLikesRepository : Repository<CatLike>, ICatLikesRepository
     {
         private ApplicationDbContext _db;
         public CatLikesRepository(ApplicationDbContext db) : base(db)

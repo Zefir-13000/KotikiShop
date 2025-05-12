@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35707.178 d17.12
+VisualStudioVersion = 17.12.35707.178
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KotikiShop", "KotikiShop\KotikiShop.csproj", "{DCC608CF-D963-45AC-890D-57779D51F6D4}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KotikiShop.DataAccess", "KotikiShop.DataAccess\KotikiShop.DataAccess.csproj", "{7C1A242E-ACBD-4FD2-BB94-6BDB626A7585}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KotikiShop.Utility", "KotikiShop.Utility\KotikiShop.Utility.csproj", "{C1670C97-929A-4774-B28C-78747C9B6326}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{9202FB2C-D5F7-4160-8E6C-D531DBD7BAE8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,8 +35,15 @@ Global
 		{C1670C97-929A-4774-B28C-78747C9B6326}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C1670C97-929A-4774-B28C-78747C9B6326}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C1670C97-929A-4774-B28C-78747C9B6326}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9202FB2C-D5F7-4160-8E6C-D531DBD7BAE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9202FB2C-D5F7-4160-8E6C-D531DBD7BAE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9202FB2C-D5F7-4160-8E6C-D531DBD7BAE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9202FB2C-D5F7-4160-8E6C-D531DBD7BAE8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {99234597-E090-455C-91CE-C2DD27FE4033}
 	EndGlobalSection
 EndGlobal
