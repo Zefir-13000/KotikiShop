@@ -53,3 +53,85 @@ ASP.NET MVC
 Легка інтеграція з .NET – дозволяє використовувати потужні можливості .NET (наприклад, Entity Framework, LINQ).<br>
 SEO-дружність – підтримка чистих URL, що важливо для пошукової оптимізації.<br>
 Безпека – вбудований захист від CSRF, XSS, SQL-ін’єкцій.
+
+<h1 align="center">
+  Як запустити цей проєкт (для повних чайників)
+</h1>
+
+### Що потрібно встановити перед початком
+
+1. **Visual Studio 2022**  
+   Завантажити: [https://visualstudio.microsoft.com/](https://visualstudio.microsoft.com/)  
+   Під час встановлення **обов'язково вибери робоче навантаження**:
+   - **ASP.NET and web development**
+   - **.NET desktop development**
+   - **Data storage and processing**
+
+2. **SQL Server** (якщо не встановлено)  
+   Рекомендується **SQL Server 2022 Developer**  
+   Завантажити: [https://www.microsoft.com/en-us/sql-server/sql-server-downloads](https://www.microsoft.com/en-us/sql-server/sql-server-downloads)
+
+3. **SQL Server Management Studio (SSMS)** — для зручної роботи з базою  
+   Завантажити: [https://learn.microsoft.com/en-us/ssms/download-sql-server-management-studio-ssms](https://learn.microsoft.com/en-us/ssms/download-sql-server-management-studio-ssms)
+
+### Як завантажити проєкт
+
+1. Відкрий GitHub-репозиторій
+2. Натисни кнопку `Code` → `Download ZIP` або скористайся Git:
+   ```bash
+   git clone https://github.com/Zefir-13000/KotikiShop.git
+   ```
+3. Розпакуй або відкрий репозиторій у **Visual Studio 2022**:
+   - `File` → `Open` → `Project/Solution...` → вибери `.sln` файл
+
+### Налаштування бази даних
+
+1. Відкрий файл `appsettings.json`
+2. Знайди рядок з `ConnectionStrings` і переконайся, що вказано правильне з'єднання. Наприклад:
+   ```json
+      "DefaultConnection": "Server=YOUR_SERVER_NAME;Database=KotikiShop;Trusted_Connection=True;TrustServerCertificate=True;Encrypt=False",
+      "ApplicationDbContextConnection": "Server=(localdb)\\mssqllocaldb;Database=KotikiShop;Trusted_Connection=True;MultipleActiveResultSets=true"
+   ```
+
+### Створення бази даних через Entity Framework
+
+1. Відкрий **Package Manager Console**:
+   - `Tools` → `NuGet Package Manager` → `Package Manager Console`
+
+2. Виконай команду:
+   ```powershell
+   Update-Database
+   ```
+
+   Якщо є помилки:
+   - Перевір правильність `Default Project` у меню Package Manager Console(Потрібно обрати `KotikiShop.DataAccess`)
+   - Перевір, що SQL Server запущено
+
+### Запуск проєкту
+
+1. У Visual Studio натисни зелену кнопку **"Start"** або клавішу **F5**(Перед цим оберіть поруч з зеленою стрілкою веб-сервер `IIS Express`)
+2. Додаток відкриється в браузері зазвичай на `https://localhost:xxxx`
+
+
+### Поширені проблеми
+
+- **"Cannot connect to SQL Server"**  
+  → Перевір, чи запущено SQL Server і правильний рядок підключення в `appsettings.json`
+
+- **"No migration configured"**  
+  → Спробуй команду(в `Package Manager Console`):
+  ```powershell
+  Add-Migration Initial
+  ```
+  а потім:
+  ```powershell
+  Update-Database
+  ```
+
+- **Помилка SSL / сертифіката в браузері**  
+  → Просто погодься на ризик і продовж, це нормально для localhost
+
+
+### Все готово!
+
+Тепер ти можеш користуватись проєктом! Якщо щось не працює — спробуй перечитати інструкцію повільно ще раз :)
